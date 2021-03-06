@@ -53,3 +53,48 @@ export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 Do not forget to replace "/path/to/" by your local path.
+## 5. A complete run of MAX by copy and paste
+This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
+
+- Download the binary file of MAX
+```sh
+mkdir tmp_test
+cd tmp_test
+wget https://github.com/WenjiangDeng/XAEM/raw/master/XAEM-binary-0.1.0.tar.gz
+tar -xzvf XAEM-binary-0.1.0.tar.gz
+cd XAEM-binary-0.1.0
+bash configure.sh
+export LD_LIBRARY_PATH=/path/to/XAEM-binary-0.1.0/lib:$LD_LIBRARY_PATH
+export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
+```
+- Download fasta file and index it
+```sh
+wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/transcripts.fa.gz
+gunzip transcripts.fa.gz
+TxIndexer -t transcripts.fa -o TxIndexer_idx
+```
+- Download the X matrix and RNA-seq data of sample1 and sample2
+```sh
+mkdir XAEM_project
+cd XAEM_project
+wget https://github.com/WenjiangDeng/XAEM/raw/master/X_matrix.RData
+wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample1_read1.fasta.gz
+wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample1_read2.fasta.gz
+wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample2_read1.fasta.gz
+wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample2_read2.fasta.gz
+cd ..
+```
+- Generate the eqclass table and Y count matrix
+```sh
+MAX -i TxIndexer_idx -l IU -1 <(gunzip -c XAEM_project/sample1_read1.fasta.gz) -2 <(gunzip -c XAEM_project/sample1_read2.fasta.gz) -p 4 -o XAEM_project/eqc_sample1
+MAX -i TxIndexer_idx -l IU -1 <(gunzip -c XAEM_project/sample2_read1.fasta.gz) -2 <(gunzip -c XAEM_project/sample2_read2.fasta.gz) -p 4 -o XAEM_project/eqc_sample2
+## R packages foreach and doParallel are required
+
+Rscript Create_count_matrix.R workdir=$PWD/XAEM_project core=8
+```
+- Estimate isoform expression using AEM algorithm
+```sh
+Rscript AEM_update_X_beta.R workdir=$PWD/XAEM_project core=8
+cd XAEM_project
+```
+Reference: tba

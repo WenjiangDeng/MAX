@@ -11,3 +11,7 @@ MAX requires several files as input, such as:
 - The reference of genome or the specific chromosome. In this study, we use the [hg38 gene model downloaded from UCSC repository](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/chromosomes/).
 - The reference of whole transcriptome or the isoforms from a specific gene. The transcritpome sequence can be retrieved from [UCSC Table Browser](http://genome.ucsc.edu/cgi-bin/hgTables). 
 - The RNA-seq data from a group of samples.
+- 
+### Software requirements for XAEM:
+- R version 3.3.0 or later with installed packages: foreach and doParallel
+- C++11 compliant compiler (g++ >= 4.7)

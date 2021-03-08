@@ -9,7 +9,7 @@ MAX requires several files as input, such as:
 
   ![image](https://user-images.githubusercontent.com/40486459/110201429-5520b100-7e63-11eb-9efd-e57f12793b66.png)
 - The reference sequence of whole genome. In this study, we use the hg38 gene model downloaded [from UCSC repository](https://hgdownload.soe.ucsc.edu/downloads.html#human/).
-- The GTF annotation file of the specific genes of interest. The GTF file can be retrieved from [UCSC Table Browser](http://genome.ucsc.edu/cgi-bin/hgTables). 
+- The GTF annotation file of the specific genes of interest. The GTF file can be retrieved from [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz). 
 - The RNA-seq data from a group of samples.
 #### Software requirements for XAEM:
 - R version 3.3.0 or later with installed packages: foreach and doParallel

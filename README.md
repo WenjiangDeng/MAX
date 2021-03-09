@@ -6,12 +6,7 @@ MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform 
 ## 2. The input data of MAX
 MAX requires several files as input, such as:
 - A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of the mutation file: 
-Chromosome	Start_pos	End_pos	REF	ALT	Gene
-13	28592620	28592620	T	C	FLT3
-13	28592622	28592622	G	T	FLT3
-13	28592623	28592623	T	A	FLT3
-13	28592629	28592629	T	C	FLT3
-13	28592634	28592637	CATG	C	FLT3
+
 ![image](https://user-images.githubusercontent.com/40486459/110524071-36484600-8113-11eb-9d86-6369007b391c.png)
 
 

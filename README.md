@@ -57,8 +57,11 @@ After the installation is finished, remember to add the paths of lib folder and 
 export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
-Do not forget to replace "/path/to/" by your local path.
-## 5. A complete run of MAX by copy and paste
+#### Do not forget to replace "/path/to/" by your local path.
+## 3. Generate the wild-type + mutant reference and the design matrix X
+### 3.1 The wild-type+mutant (WT+Mut) transcriptome reference
+### 3.2 Construct the design matrix X
+## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 
 - Download the binary file of MAX

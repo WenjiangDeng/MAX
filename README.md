@@ -61,6 +61,7 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 ## 3. Generate the wild-type + mutant reference and the design matrix X
 ### 3.1 The wild-type+mutant (WT+Mut) transcriptome reference
 ### 3.2 Construct the design matrix X
+## 4. Quantifcation of mutant-allele expression from RNA-seq data
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

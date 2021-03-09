@@ -59,9 +59,20 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Generate the wild-type + mutant reference and the design matrix X
-### 3.1 The wild-type+mutant (WT+Mut) transcriptome reference
-### 3.2 Construct the design matrix X
-## 4. Quantifcation of mutant-allele expression from RNA-seq data
+
+This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input parameters are: a list of mutations, a GTF file, the wild-type transcriptome reference and the version of gene model ("hg19" or "hg38"). The command is:
+
+```sh
+bash pipeline.sh -m mutation-list.txt -g GTF-file.gtf -r transcriptome-reference.fa -v hg-version -d working-directory
+```
+The outputs will be WT_Mut_tx_ref.final.fa and X_matrix.RData.
+## 4. Quantifcation of mutant-allele expression
+```sh
+DBOOST_ROOT=/path/to/boostDir/ DTBB_INSTALL_DIR=/path/to/tbbDir/ DCMAKE_INSTALL_PREFIX=/path/to/expectedBuildDir bash install.sh
+After the installation is finished, remember to add the paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
+export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
+export PATH=/path/to/expectedBuildDir/bin:$PATH
+```
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

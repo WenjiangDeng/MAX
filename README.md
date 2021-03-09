@@ -59,10 +59,14 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Generate the wild-type + mutant reference and the design matrix X
 
-This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input parameters are: a list of mutations, a GTF file, the wild-type transcriptome reference and the version of gene model ("hg19" or "hg38"). The command is:
+This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input parameters are: a list of mutations, a GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. The commands are:
 
 ```sh
-bash pipeline.sh -m mutation-list.txt -g GTF-file.gtf -r transcriptome-reference.fa -v hg-version -d working-directory
+wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
+gunzip hg38.refGene.gtf.gz 
+wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz
+gunzip refMrna.fa.gz
+bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 ```
 The outputs will be WT_Mut_tx_ref.final.fa and X_matrix.RData.
 ## 4. Quantifcation of mutant-allele expression

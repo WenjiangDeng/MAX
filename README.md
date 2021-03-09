@@ -11,7 +11,7 @@ MAX requires several files as input, such as:
 ![image](https://user-images.githubusercontent.com/40486459/110447921-007a7180-80c1-11eb-8dae-b1b9b9b891a7.png)
 
 
-#### (Please make sure your mutation list is detected using hg19 or hg38)
+#### (Please make sure whether your mutation list is detected using hg19 or hg38)
 
 - The GTF annotation file. The hg38 RefGene GTF file can be downloaded from [this site](https://staff.ki.se/people/wenden) or retrieved from [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz).
 - The whole transcriptome reference. The hg38 version which can be downloaded from [UCSC repository](http://ftp.hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz).

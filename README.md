@@ -66,6 +66,7 @@ wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.
 gunzip hg38.refGene.gtf.gz 
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz
 gunzip refMrna.fa.gz
+
 bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 ```
 The outputs will be WT_Mut_tx_ref.final.fa and X_matrix.RData.

@@ -11,7 +11,7 @@ MAX requires several files as input, such as:
 ![image](https://user-images.githubusercontent.com/40486459/110447921-007a7180-80c1-11eb-8dae-b1b9b9b891a7.png)
 
 
-- The GTF annotation file. The hg38 RefGene GTF file can be downloaded from [this site](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz) or retrieved from [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz).
+- The GTF annotation file. The hg38 RefGene GTF file can be downloaded from [this site](https://staff.ki.se/people/wenden) or retrieved from [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz).
 - The whole transcriptome reference. The hg38 version which can be downloaded from [UCSC repository](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz).
 - The RNA-seq data from a group of samples.
 #### Software requirements for XAEM:

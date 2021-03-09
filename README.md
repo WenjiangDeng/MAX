@@ -13,7 +13,7 @@ MAX requires several files as input, such as:
 #### (Please make sure if the mutations are detected using hg19 or hg38 assembly)
 
 - The GTF annotation file, which can be dowlnloaded from the [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/). The hg38 RefGene version can be downloaded [here](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz).
-- The whole transcriptome reference. The hg38 version can be downloaded from the [NCBI repository](https://www.ncbi.nlm.nih.gov/genome/guide/human/).
+- The whole transcriptome reference. The hg38 version can be downloaded using the link: ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz.
 - The RNA-seq data from a group of samples.
 #### Software requirements for XAEM:
 - R version 3.3.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), Biostrings, foreach and doParallel

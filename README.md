@@ -8,10 +8,11 @@ MAX requires several files as input, such as:
 - A list of mutations containing the information of chromosome, start position, end position, reference/alternative sequence and gene names. Here is an example of the mutation file:
 
 
-![image](https://user-images.githubusercontent.com/40486459/110446896-f310b780-80bf-11eb-9242-37596e6d830c.png)
+![image](https://user-images.githubusercontent.com/40486459/110447921-007a7180-80c1-11eb-8dae-b1b9b9b891a7.png)
+
 
 - The GTF annotation file. The hg38 RefGene GTF file can be downloaded from [this page](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz) or retrieved from [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz).
-- The whole transcriptome reference. The hg38 version which can be downloaded from [UCSC repository.](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz)
+- The whole transcriptome reference. The hg38 version which can be downloaded from [UCSC repository](ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz).
 - The RNA-seq data from a group of samples.
 #### Software requirements for XAEM:
 - R version 3.3.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), Biostrings, foreach and doParallel

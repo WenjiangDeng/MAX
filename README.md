@@ -16,7 +16,7 @@ MAX requires several files as input, such as:
 - The whole transcriptome reference. The hg38 version can be downloaded using the link: ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz
 - The RNA-seq data from a group of samples.
 #### Software requirements for XAEM:
-- R version 3.3.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), Biostrings, foreach and doParallel
+- R version 3.6.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), foreach and doParallel
 - C++11 compliant compiler (g++ >= 4.7)
 ## 2. Download and installation
 #### If you use the binary verion of XAEM (recommended):

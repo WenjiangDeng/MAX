@@ -59,7 +59,7 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Generate the wild-type + mutant reference and the design matrix X
 
-This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input parameters are: a list of mutations, a GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. The commands are:
+This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input files for this step are: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the commands to start the analysis are:
 
 ```sh
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz

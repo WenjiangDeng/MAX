@@ -17,12 +17,12 @@ MAX requires several files as input, such as:
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz # hg19
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz #hg38
 ```
-- The whole transcriptome reference. The clean version of hg19 or hg38 reference can be downloaded by running:
+- The whole transcriptome reference, or the sequences of a subset of genes that you want to focus on. The clean version of hg19 or hg38 reference can be downloaded by running:
 ```sh
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/refMrna.fa.gz # hg19
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 ```
-- The RNA-seq data from a group of samples.
+- The RNA-seq data from multiple samples.
 #### Software requirements for XAEM:
 - R version 3.6.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), foreach and doParallel
 - C++11 compliant compiler (g++ >= 4.7)
@@ -87,8 +87,8 @@ MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -
 ```
 - If the data is compressed in gz format, we can combine "gunzip" in the command:
 ```sh
-MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/MAX_project/sample1
-MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/MAX_project/sample2
+MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/MAX_project/sample1 -w 100000000
+MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/MAX_project/sample2 -w 100000000
 ```
 - After running MAX there will be the output of the equivalence class table for multiple samples. We then create the Y count matrix. For example, if we want to run XAEM parallelly using 8 cores, the command is:
 
@@ -99,14 +99,14 @@ Rscript Create_count_matrix.R design.matrix=/path/to/X_matrix.RData workdir=/pat
 When the Y count matrix is constructed, we can use the AEM algorithm to quantify the mutant-allele expression. The command is as follows:
 
 ```sh
-Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project core=8 design.matrix=/path/to/X_matrix.RData isoform.out=XAEM_isoform_expression.RData paralog.out=XAEM_paralog_expression.RData remove.ycount=TRUE
+Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to/X_matrix.RData max.out=/path/to/mutant_expression.RData remove.ycount=TRUE core=8
 ```
 #### Parameter setting
 - **workdir**: the path to working directory
-- **core**: the number of cpu cores for parallel computing
 - **design.matrix**: the path to the design matrix
-- **remove.ycount** (default=TRUE): to clean all data of Ycount after use.
-- xxxx
+- **max.out**: the output file for isoform expression
+- **core**: the number of cpu cores for parallel computing, default is 8
+- **remove.ycount** (default=TRUE): to clean all data of Ycount after use
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

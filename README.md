@@ -76,14 +76,14 @@ This step will produce (1) the reference which contains both wild-type and mutan
 bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 
 ```
-The outputs will be **WT_Mut_tx_ref.final.fa**, **X_matrix.RData** and the **Index_reference folder**.
+The outputs will be **WT_Mut_tx_ref.final.fa**, **X_matrix.RData** and the **Index_reference**.
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
 ### 4.1 Generate the equivalence class table and Y count matrix
 - The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). For example, we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
-MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1
-MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2
+MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1 -w 100000000
+MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2 -w 100000000
 ```
 - If the data is compressed in gz format, we can combine "gunzip" in the command:
 ```sh
@@ -105,8 +105,8 @@ Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to
 - **workdir**: the path to working directory
 - **design.matrix**: the path to the design matrix
 - **max.out**: the output file for isoform expression
-- **core**: the number of cpu cores for parallel computing, default is 8
 - **remove.ycount** (default=TRUE): to clean all data of Ycount after use
+- **core**: the number of cpu cores for parallel computing, default is 8
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

@@ -17,7 +17,7 @@ MAX requires several files as input, such as:
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz # hg19
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz #hg38
 ```
-- The whole transcriptome reference, or the sequences of a subset of genes that you want to focus on. The clean version of hg19 or hg38 reference can be downloaded by running:
+- The whole transcriptome reference, or the isoforms of a subset of genes that you aim to focus on. The clean version of hg19 or hg38 reference can be downloaded by running:
 ```sh
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/refMrna.fa.gz # hg19
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38

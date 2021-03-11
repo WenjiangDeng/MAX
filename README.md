@@ -67,7 +67,7 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Generate the wild-type + mutant reference, reference index and the design matrix X
 
-This step will construct (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory.<br />When you have prepared these files, the command to start the analysis is:
+This step will construct (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires the following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the command to start the analysis is:
 
 ```sh
 #wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz
@@ -78,14 +78,21 @@ This step will construct (1) the reference which contains both wild-type and mut
 bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 
 ```
-The outputs will be WT_Mut_tx_ref.final.fa and X_matrix.RData.
+The outputs will be WT_Mut_tx_ref.final.fa, X_matrix.RData and the Index folder.
 ## 4. Quantifcation of mutant-allele expression
+Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
+### 4.1 Generating the equivalence class table and Y count matrix
+The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). For example, we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
-DBOOST_ROOT=/path/to/boostDir/ DTBB_INSTALL_DIR=/path/to/tbbDir/ DCMAKE_INSTALL_PREFIX=/path/to/expectedBuildDir bash install.sh
-After the installation is finished, remember to add the paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
-export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/expectedBuildDir/bin:$PATH
+MAX -i /path/to/Index -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/XAEM_project/sample1
+MAX -i /path/to/Index -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/XAEM_project/sample2
 ```
+- If the data is compressed in gz format, we can use gunzip in the command:
+```sh
+XAEM -i /path/to/Index -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/XAEM_project/sample1
+XAEM -i /path/to/Index -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/XAEM_project/sample2
+```
+
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

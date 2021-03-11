@@ -76,11 +76,11 @@ This step will produce (1) the reference which contains both wild-type and mutan
 bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 
 ```
-The outputs will be **WT_Mut_tx_ref.final.fa**, **X_matrix.RData** and the **Index_reference**.
+The outputs will be: **WT_Mut_reference.fa**, **X_matrix.RData** and the **Index_reference** folder.
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
 ### 4.1 Generate the equivalence class table and Y count matrix
-- The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). For example, we want to run MAX for sample1 and sample2 with 8 cpus:
+- The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
 MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1 -w 100000000
 MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2 -w 100000000
@@ -93,7 +93,7 @@ MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c
 - After running MAX there will be the output of the equivalence class table for multiple samples. We then create the Y count matrix. For example, if we want to run XAEM parallelly using 8 cores, the command is:
 
 ```sh
-Rscript Create_count_matrix.R design.matrix=/path/to/X_matrix.RData workdir=/path/to/XAEM_project core=8
+Rscript Create_count_matrix.R design.matrix=/path/to/X_matrix.RData workdir=/path/to/MAX_project core=8
 ```
 ### 4.2 Estimate the transcript expression using AEM algorithm
 When the Y count matrix is constructed, we can use the AEM algorithm to quantify the mutant-allele expression. The command is as follows:

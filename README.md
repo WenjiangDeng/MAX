@@ -5,12 +5,12 @@ MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform 
 
 ## 2. The input data of MAX
 MAX requires several files as input, such as:
-- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of the mutation file: 
+- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of the mutation file and the header: 
 
 ![image](https://user-images.githubusercontent.com/40486459/110524071-36484600-8113-11eb-9d86-6369007b391c.png)
 
 
-#### (Please follow the header and make sure if the mutations are detected using hg19 or hg38 assembly)
+#### (Please make sure if the mutations are detected using hg19 or hg38 assembly)
 
 - The GTF annotation file, which can be dowlnloaded from the [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables). The hg19 or hg38 RefGene GTF can be downloaded by running:
 ```sh
@@ -65,9 +65,9 @@ export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 #### Do not forget to replace "/path/to/" by your local path.
-## 3. Generate the wild-type + mutant reference and the design matrix X
+## 3. Generate the wild-type + mutant reference, reference index and the design matrix X
 
-This step will generate (1) the reference which contains both wild-type and mutant alleles and (2) the X matrix (design matrix). The input files for this step are: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the commands to start the analysis are:
+This step will construct (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the commands to start the analysis are:
 
 ```sh
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz

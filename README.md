@@ -78,7 +78,7 @@ This step will construct (1) the reference which contains both wild-type and mut
 bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 
 ```
-The outputs will be WT_Mut_tx_ref.final.fa, X_matrix.RData and the Index folder.
+The outputs will be **WT_Mut_tx_ref.final.fa**, **X_matrix.RData** and the **Index folder**.
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
 ### 4.1 Generate the equivalence class table and Y count matrix
@@ -104,10 +104,10 @@ When the Y count matrix is constructed, we can use the AEM algorithm to quantify
 Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project core=8 design.matrix=/path/to/X_matrix.RData isoform.out=XAEM_isoform_expression.RData paralog.out=XAEM_paralog_expression.RData merge.paralogs=FALSE isoform.method=average remove.ycount=TRUE
 ```
 #### Parameter setting
-- *workdir*: the path to working directory
-- *core*: the number of cpu cores for parallel computing
-- *design.matrix*: the path to the design matrix
-- *remove.ycount* (default=TRUE): to clean all data of Ycount after use.
+- **workdir**: the path to working directory
+- **core**: the number of cpu cores for parallel computing
+- **design.matrix**: the path to the design matrix
+- **remove.ycount** (default=TRUE): to clean all data of Ycount after use.
 - xxxx
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.

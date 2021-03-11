@@ -106,7 +106,8 @@ Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to
 - **design.matrix**: the path to the design matrix
 - **max.out**: the output file for isoform expression
 - **remove.ycount** (default=TRUE): to clean all data of Ycount after use
-- **core**: the number of cpu cores for parallel computing, default is 8
+- **core**: the number of cpu cores for parallel computing, default is 8.
+The final results are in the mutant_expression.RData, which contains two objects: the XAEM_count for the read counts value and XAEM_tpm for the TPM (Transcripts Per Kilobase Million) value.
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

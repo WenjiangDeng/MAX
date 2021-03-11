@@ -97,7 +97,7 @@ XAEM -i /path/to/Index -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2
 ```sh
 Rscript Create_count_matrix.R workdir=/path/to/XAEM_project core=8
 ```
-### 4.2 Esstimate the transcript expression using AEM algorithm
+### 4.2 Estimate the transcript expression using AEM algorithm
 When the Y count matrix is constructed, we can use the AEM algorithm to quantify the mutant-allele expression. The command is as follows:
 
 ```sh

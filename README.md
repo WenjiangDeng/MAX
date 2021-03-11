@@ -81,7 +81,7 @@ bash pipeline.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 
 The outputs will be WT_Mut_tx_ref.final.fa, X_matrix.RData and the Index folder.
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
-### 4.1 Generating the equivalence class table and Y count matrix
+### 4.1 Generate the equivalence class table and Y count matrix
 - The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). For example, we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
 MAX -i /path/to/Index -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1
@@ -103,7 +103,12 @@ When the Y count matrix is constructed, we can use the AEM algorithm to quantify
 ```sh
 Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project core=8 design.matrix=/path/to/X_matrix.RData isoform.out=XAEM_isoform_expression.RData paralog.out=XAEM_paralog_expression.RData merge.paralogs=FALSE isoform.method=average remove.ycount=TRUE
 ```
-
+#### Parameter setting
+- workdir: the path to working directory
+- core: the number of cpu cores for parallel computing
+- design.matrix: the path to the design matrix
+- remove.ycount (default=TRUE): to clean all data of Ycount after use.
+- xxxx
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

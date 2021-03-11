@@ -87,19 +87,19 @@ MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -
 ```
 - If the data is compressed in gz format, we can combine "gunzip" in the command:
 ```sh
-XAEM -i /path/to/Index_reference -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/MAX_project/sample1
-XAEM -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/MAX_project/sample2
+MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/MAX_project/sample1
+MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/MAX_project/sample2
 ```
 - After running MAX there will be the output of the equivalence class table for multiple samples. We then create the Y count matrix. For example, if we want to run XAEM parallelly using 8 cores, the command is:
 
 ```sh
-Rscript Create_count_matrix.R workdir=/path/to/XAEM_project core=8
+Rscript Create_count_matrix.R design.matrix=/path/to/X_matrix.RData workdir=/path/to/XAEM_project core=8
 ```
 ### 4.2 Estimate the transcript expression using AEM algorithm
 When the Y count matrix is constructed, we can use the AEM algorithm to quantify the mutant-allele expression. The command is as follows:
 
 ```sh
-Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project core=8 design.matrix=/path/to/X_matrix.RData isoform.out=XAEM_isoform_expression.RData paralog.out=XAEM_paralog_expression.RData merge.paralogs=FALSE isoform.method=average remove.ycount=TRUE
+Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project core=8 design.matrix=/path/to/X_matrix.RData isoform.out=XAEM_isoform_expression.RData paralog.out=XAEM_paralog_expression.RData remove.ycount=TRUE
 ```
 #### Parameter setting
 - **workdir**: the path to working directory

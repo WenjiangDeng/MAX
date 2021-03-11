@@ -12,12 +12,12 @@ MAX requires several files as input, such as:
 
 #### (Please follow the header and make sure if the mutations are detected using hg19 or hg38 assembly)
 
-- The GTF annotation file, which can be dowlnloaded from the [UCSC Table Browser](https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/). The hg19 or hg38 RefGene GTF can be downloaded by running:
+- The GTF annotation file, which can be dowlnloaded from the [UCSC Table Browser](https://genome.ucsc.edu/cgi-bin/hgTables). The hg19 or hg38 RefGene GTF can be downloaded by running:
 ```sh
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz # hg19
 wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz #hg38
 ```
-- The whole transcriptome reference. The clean version of hg19 or hg38 reference can be downloaded by using:
+- The whole transcriptome reference. The clean version of hg19 or hg38 reference can be downloaded by running:
 ```sh
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/refMrna.fa.gz # hg19
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38

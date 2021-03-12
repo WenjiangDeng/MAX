@@ -80,7 +80,7 @@ The outputs will be: **WT_Mut_reference.fa**, **X_matrix.RData** and the **Index
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
 ### 4.1 Generate the equivalence class table and Y count matrix
-- The command to generate equivalence class table for each sample is similar to [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
+- The command to generate equivalence class table for each sample is similar with [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
 MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1 -w 100000000
 MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2 -w 100000000
@@ -108,7 +108,7 @@ Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to
 - **remove.ycount** (default=TRUE): to clean all data of Ycount after use
 - **core**: the number of cpu cores for parallel computing, default is 8.
 
-The final results are in the mutant_expression.RData, which contains two objects: the MAX_count for the read counts value and MAX_tpm for the TPM (Transcripts Per Kilobase Million) value.
+The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
 ## 5. A complete run of MAX by copy and paste
 This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
 

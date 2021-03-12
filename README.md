@@ -109,7 +109,7 @@ Rscript AEM_update_X_beta.R workdir=/path/to/MAX_project design.matrix=/path/to/
 - **core**: the number of cpu cores for parallel computing, default is 8.
 
 The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
-## 5. A test run of MAX just by copy and paste
+## 5. A trial run of MAX by copy and paste
 This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in acute myeloid leukemia (AML). 
 
 - Download the binary file of MAX and configure the path
@@ -118,16 +118,16 @@ This section shows a complete run for MAX pipeline. We can test MAX just by cop
 mkdir MAX_binary
 cd MAX_binary
 # Download the binary version of MAX
-https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
 
 # Configure the tool
 tar -xzvf MAX-binary-0.1.0.tar.gz
 cd MAX-binary-0.1.0
 bash configure.sh
-cd ..
 # Add the paths to system
 export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
 export PATH=$PWD/bin:$PATH
+cd ..
 cd ..
 
 ```
@@ -148,7 +148,7 @@ wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
 bash ../MAX_binary/MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
-- Download the test RNA-seq data from 10 samples
+- Download the test RNA-seq data of 10 samples
 ```sh
 
 wget https://github.com/WenjiangDeng/MAX/raw/main/RNA-seq_FLT3.tar.gz

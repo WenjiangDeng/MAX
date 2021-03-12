@@ -109,48 +109,65 @@ Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to
 - **core**: the number of cpu cores for parallel computing, default is 8.
 
 The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
-## 5. A complete run of MAX by copy and paste
-This section shows the tutorial to run MAX pipeline. We can test MAX by just copy and paste of the example commands.
+## 5. An example run of MAX by copy and paste
+This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in acute myeloid leukemia (AML). 
 
-- Download the binary file of MAX
+- Download the binary file of MAX and configure the path
 ```sh
-mkdir tmp_test
-cd tmp_test
-wget https://github.com/WenjiangDeng/XAEM/raw/master/XAEM-binary-0.1.0.tar.gz
-tar -xzvf XAEM-binary-0.1.0.tar.gz
-cd XAEM-binary-0.1.0
+# Create a working folder
+mkdir MAX_binary
+cd MAX_binary
+# Download the binary version of XAEM
+wget https://www.meb.ki.se/sites/biostatwiki/wp-content/uploads/sites/4/XAEM_datasources/XAEM-binary-0.1.1.tar.gz
+
+# Configure the tool
+tar -xzvf XAEM-binary-0.1.1.tar.gz
+cd XAEM-binary-0.1.1
 bash configure.sh
-export LD_LIBRARY_PATH=/path/to/XAEM-binary-0.1.0/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
+
+# Add the paths to system
+export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/bin:$PATH
+cd ..
+
 ```
-- Download fasta file and index it
-```sh
-wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/transcripts.fa.gz
-gunzip transcripts.fa.gz
-TxIndexer -t transcripts.fa -o TxIndexer_idx
-```
-- Download the X matrix and RNA-seq data of sample1 and sample2
+- Download the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene
 ```sh
 mkdir XAEM_project
 cd XAEM_project
-wget https://github.com/WenjiangDeng/XAEM/raw/master/X_matrix.RData
-wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample1_read1.fasta.gz
-wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample1_read2.fasta.gz
-wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample2_read1.fasta.gz
-wget http://fafner.meb.ki.se/biostatwiki/2018_XAEM/sample2_read2.fasta.gz
-cd ..
+
+wget https://github.com/WenjiangDeng/MAX/blob/main/mutation_list.txt
+wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz
+gunzip hg19.refGene.gtf.gz
+wget https://github.com/WenjiangDeng/MAX/blob/main/isoform_ref_FLT3_gene.fa
+
+```
+- construct the wild-type+Mutant reference, reference index and the X matrix
+```sh
+
+bash pipeline.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
+
+```
+- Download the test RNA-seq data from 10 samples
+```sh
+
+wget https://github.com/WenjiangDeng/MAX/blob/main/fasta_FLT3.tar.gz
+tar -zxvf fasta_FLT3.tar.gz
+ll -tr fasta_flt3/
+
 ```
 - Generate the eqclass table and Y count matrix
 ```sh
-MAX -i Index_reference -l IU -1 <(gunzip -c XAEM_project/sample1_read1.fasta.gz) -2 <(gunzip -c XAEM_project/sample1_read2.fasta.gz) -p 4 -o XAEM_project/eqc_sample1
-MAX -i Index_reference -l IU -1 <(gunzip -c XAEM_project/sample2_read1.fasta.gz) -2 <(gunzip -c XAEM_project/sample2_read2.fasta.gz) -p 4 -o XAEM_project/eqc_sample2
-## R packages foreach and doParallel are required
+for ind in $(seq -f %02.0f  10); do
+MAX -i Index_reference -l IU -1 'fasta_flt3/sample_'$ind'_1.fasta' -2 'fasta_flt3/sample_'$ind'_2.fasta' -p 8 -o 'sample_'$ind -w 100000000
+done
 
-Rscript Create_count_matrix.R workdir=$PWD/XAEM_project core=8
+Rscript ../MAX_binary/XAEM-binary-0.1.1/R/Create_count_matrix.R workdir=$PWD design.matrix=X_matrix.RData core=8
+
 ```
-- Estimate isoform expression using AEM algorithm
+- Estimate mutant-allele expression using AEM algorithm
 ```sh
-Rscript AEM_update_X_beta.R workdir=$PWD/XAEM_project core=8
-cd XAEM_project
+Rscript ../MAX_binary/XAEM-binary-0.1.1/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 ```
-Reference: tba
+
+#### Reference: tba

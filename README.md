@@ -136,23 +136,23 @@ cd ..
 mkdir XAEM_project
 cd XAEM_project
 
-wget https://github.com/WenjiangDeng/MAX/blob/main/mutation_list.txt
+wget https://github.com/WenjiangDeng/MAX/raw/main/mutation_list.txt
 wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz
 gunzip hg19.refGene.gtf.gz
-wget https://github.com/WenjiangDeng/MAX/blob/main/isoform_ref_FLT3_gene.fa
+wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
 
 ```
 - construct the wild-type+Mutant reference, reference index and the X matrix
 ```sh
 
-bash ../MAX_binary/XAEM-binary-0.1.1/pipeline.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
+bash ../MAX_binary/XAEM-binary-0.1.1/MAX.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
 - Download the test RNA-seq data from 10 samples
 ```sh
 
-wget https://github.com/WenjiangDeng/MAX/blob/main/fasta_FLT3.tar.gz
-tar -xzvf fasta_FLT3.tar.gz
+wget https://github.com/WenjiangDeng/MAX/raw/main/RNA-seq_FLT3.tar.gz
+tar -xzvf RNA-seq_FLT3.tar.gz
 ll -tr fasta_flt3/
 
 ```

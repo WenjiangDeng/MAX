@@ -1,7 +1,7 @@
 # MAX: quantification of mutant-allele expression in cancer from RNA sequencing data
 
 ## 1. What is MAX?
-MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. (The section 5 shows a complete test run of MAX just by copy and paste.)
+MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. In section 5 it shows a complete test run of MAX just by copy and paste.
 
 ## 2. The input data of MAX
 MAX requires several files as input, such as:

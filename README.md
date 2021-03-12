@@ -49,7 +49,7 @@ export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
 ```
 #### If you want to build MAX from sources:
 
-- Download MAX and move to XAEM_home directory
+- Download MAX and move to MAX_home directory
 ```sh
 wget https://github.com/WenjiangDeng/XAEM/raw/master/XAEM-source-0.1.0.zip
 unzip MAX-source-0.1.0.zip

@@ -128,7 +128,6 @@ bash configure.sh
 export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
 export PATH=$PWD/bin:$PATH
 cd ..
-cd ..
 
 ```
 - Download the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene
@@ -145,7 +144,7 @@ wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
 - construct the wild-type+Mutant reference, reference index and the X matrix
 ```sh
 
-bash ../MAX_binary/MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
+bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
 - Download the test RNA-seq data of 10 samples
@@ -161,12 +160,12 @@ for ind in $(seq -f %02.0f  10); do
 MAX -i Index_reference -l IU -1 'fasta_flt3/sample_'$ind'_1.fasta' -2 'fasta_flt3/sample_'$ind'_2.fasta' -p 8 -o 'sample_'$ind 
 done
 
-Rscript ../MAX_binary/MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X_matrix.RData core=8
+Rscript ../MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X_matrix.RData core=8
 
 ```
 - Estimate mutant-allele expression using AEM algorithm
 ```sh
-Rscript ../MAX_binary/MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
+Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 ```
 The final results are in the mutant_expression.RData, which contains the MAX_count and MAX_tpm objects. 
 

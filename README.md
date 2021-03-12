@@ -145,14 +145,14 @@ wget https://github.com/WenjiangDeng/MAX/blob/main/isoform_ref_FLT3_gene.fa
 - construct the wild-type+Mutant reference, reference index and the X matrix
 ```sh
 
-bash pipeline.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
+bash ../MAX_binary/XAEM-binary-0.1.1/pipeline.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
 - Download the test RNA-seq data from 10 samples
 ```sh
 
 wget https://github.com/WenjiangDeng/MAX/blob/main/fasta_FLT3.tar.gz
-tar -zxvf fasta_FLT3.tar.gz
+tar -xzvf fasta_FLT3.tar.gz
 ll -tr fasta_flt3/
 
 ```

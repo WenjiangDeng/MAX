@@ -109,7 +109,7 @@ Rscript AEM_update_X_beta.R workdir=/path/to/XAEM_project design.matrix=/path/to
 - **core**: the number of cpu cores for parallel computing, default is 8.
 
 The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
-## 5. An example run of MAX by copy and paste
+## 5. A test run of MAX just by copy and paste
 This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in acute myeloid leukemia (AML). 
 
 - Download the binary file of MAX and configure the path

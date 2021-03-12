@@ -66,7 +66,7 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Construct the wild-type + mutant reference, reference index and the X matrix
-#### In section 5 we show a quick test run of MAX just by copy and paste.
+#### In Section 5 we show a quick test run of MAX just by copy and paste.
 This step will produce (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires the following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the command to start the analysis is:
 
 ```sh
@@ -153,7 +153,7 @@ bash ../MAX_binary/MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g hg19.refGene.
 
 wget https://github.com/WenjiangDeng/MAX/raw/main/RNA-seq_FLT3.tar.gz
 tar -xzvf RNA-seq_FLT3.tar.gz
-rm RNA-seq_FLT3.tar.gz
+
 ```
 - Generate the eqclass table and Y count matrix
 ```sh

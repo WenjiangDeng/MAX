@@ -1,8 +1,7 @@
 # MAX: quantification of mutant-allele expression in cancer from RNA sequencing data
 
 ## 1. What is MAX?
-MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. In section 5 it shows a complete test run of MAX just by copy and paste.
-
+MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. 
 ## 2. The input data of MAX
 MAX requires several files as input, such as:
 - A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of [the mutation file with the header](https://github.com/WenjiangDeng/MAX/blob/main/mutation_list.txt): 
@@ -27,11 +26,12 @@ wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 - R version 3.6.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), polyester, Biostrings, foreach and doParallel
 - C++11 compliant compiler (g++ >= 4.7)
 ## 2. Download and installation
+
 #### If you use the binary verion of MAX (recommended):
 
-- Download the latest binary version from the latest MAX release:
+- Download the latest binary version from the MAX release:
 ```sh
-wget https://github.com/WenjiangDeng/XAEM/raw/master/XAEM-binary-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
 ```
 - Uncompress to folder
 ```sh
@@ -65,8 +65,8 @@ export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 #### Do not forget to replace "/path/to/" by your local path.
-## 3. Construct the wild-type + mutant reference, reference index and the design matrix X
-
+## 3. Construct the wild-type + mutant reference, reference index and the X matrix
+#### In section 5 we show a quick test run of MAX just by copy and paste.
 This step will produce (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires the following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the command to start the analysis is:
 
 ```sh
@@ -118,7 +118,7 @@ This section shows a complete run for MAX pipeline. We can test MAX just by cop
 mkdir MAX_binary
 cd MAX_binary
 # Download the binary version of MAX
-wget https://www.meb.ki.se/sites/biostatwiki/wp-content/uploads/sites/4/XAEM_datasources/XAEM-binary-0.1.1.tar.gz
+https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
 
 # Configure the tool
 tar -xzvf MAX-binary-0.1.0.tar.gz

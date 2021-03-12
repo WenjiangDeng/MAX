@@ -169,5 +169,6 @@ Rscript ../MAX_binary/XAEM-binary-0.1.1/R/Create_count_matrix.R workdir=$PWD des
 ```sh
 Rscript ../MAX_binary/XAEM-binary-0.1.1/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 ```
+The final results are in the mutant_expression.RData, which contains the MAX_count and MAX_tpm objects. 
 
 #### Reference: tba

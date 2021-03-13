@@ -118,7 +118,7 @@ This section shows a complete run for MAX pipeline. We can test MAX just by cop
 mkdir MAX_binary
 cd MAX_binary
 # Download the binary version of MAX
-wget https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/MAX-binary-0.1.0.tar.gz
 
 # Configure the tool
 tar -xzvf MAX-binary-0.1.0.tar.gz

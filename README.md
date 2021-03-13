@@ -66,21 +66,21 @@ export PATH=/path/to/expectedBuildDir/bin:$PATH
 ```
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Construct the wild-type + mutant reference, reference index and the X matrix
-#### In Section 5 we show a quick test run of MAX just by copy and paste.
+#### In Section 5 we show a test run of MAX just by copy and paste.
 This step will produce (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires the following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the command to start the analysis is:
 
 ```sh
 # wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz 
 # wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz
 
-bash max.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
+bash MAX.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
 
 ```
 The outputs will be: **WT_Mut_reference.fa**, **X_matrix.RData** and the **Index_reference** folder.
 ## 4. Quantifcation of mutant-allele expression
 Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
 ### 4.1 Generate the equivalence class table and Y count matrix
-- The command to generate equivalence class table for each sample is similar with [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
+- The command to generate equivalence class table for each sample is similar with [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and the RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
 ```sh
 MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1 
 MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2 
@@ -110,7 +110,7 @@ Rscript AEM_update_X_beta.R workdir=/path/to/MAX_project design.matrix=/path/to/
 
 The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
 ## 5. A trial run of MAX by copy and paste
-This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in acute myeloid leukemia (AML). 
+This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in Acute Myeloid Leukemia (AML). 
 
 - Download the binary file of MAX and configure the path
 ```sh
@@ -167,6 +167,6 @@ Rscript ../MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X
 ```sh
 Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 ```
-The final results are in the mutant_expression.RData, which contains the MAX_count and MAX_tpm objects. 
+The final results are in the **mutant_expression.RData**, which contains the MAX_count and MAX_tpm objects. 
 
 #### Reference: tba

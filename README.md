@@ -31,7 +31,8 @@ wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 
 - Download the latest binary version from the MAX release:
 ```sh
-wget https://github.com/WenjiangDeng/MAX/releases/download/MAX-binary-0.1.0/MAX-binary-0.1.0.tar.gz
+wget wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/MAX-binary-0.1.0.tar.gz
+
 ```
 - Uncompress to folder
 ```sh

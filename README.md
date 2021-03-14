@@ -136,15 +136,14 @@ mkdir MAX_project
 cd MAX_project
 
 wget https://github.com/WenjiangDeng/MAX/raw/main/mutation_list.txt
-wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg19/bigZips/genes/hg19.refGene.gtf.gz
-gunzip hg19.refGene.gtf.gz
+wget https://github.com/WenjiangDeng/MAX/raw/main/test_FLT3.gtf
 wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
 
 ```
 - construct the wild-type+Mutant reference, reference index and the X matrix
 ```sh
-
-bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g hg19.refGene.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
+# This step may take several minutes
+bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g test_FLT3.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
 - Download the test RNA-seq data of 10 samples

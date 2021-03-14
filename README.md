@@ -142,7 +142,8 @@ wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
 ```
 - construct the wild-type+Mutant reference, reference index and the X matrix
 ```sh
-# This step may take several minutes
+# This step can take several minutes
+
 bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g test_FLT3.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
 
 ```
@@ -151,6 +152,7 @@ bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g test_FLT3.gtf -r isoform
 
 wget https://github.com/WenjiangDeng/MAX/raw/main/RNA-seq_FLT3.tar.gz
 tar -xzvf RNA-seq_FLT3.tar.gz
+
 
 ```
 - Generate the eqclass table and Y count matrix

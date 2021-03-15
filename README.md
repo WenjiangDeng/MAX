@@ -47,24 +47,68 @@ bash configure.sh
 ```sh
 export LD_LIBRARY_PATH=/path/to/XAEM-binary-0.1.0/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
+#Done
 ```
 #### If you want to build MAX from sources:
 
-- Download MAX and move to MAX_home directory
-```sh
-wget https://github.com/WenjiangDeng/XAEM/raw/master/XAEM-source-0.1.0.zip
-unzip MAX-source-0.1.0.zip
+##########################
+### download MAX
+wget xxxxxxxxxxxxxxxxxx
+tar -xzvf MAX-source-0.1.0.tar.gz
 cd MAX-source-0.1.0
+
+#config to run MAX
 bash configure.sh
-```
-MAX requires information of flags from Sailfish including DFETCH_BOOST, DBOOST_ROOT, DTBB_INSTALL_DIR and DCMAKE_INSTALL_PREFIX. Please refer to the Sailfish website for more details of these flags.
-- Do installation by the following command:
-```sh
-DBOOST_ROOT=/path/to/boostDir/ DTBB_INSTALL_DIR=/path/to/tbbDir/ DCMAKE_INSTALL_PREFIX=/path/to/expectedBuildDir bash install.sh
-After the installation is finished, remember to add the paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
-export LD_LIBRARY_PATH=/path/to/expectedBuildDir/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/expectedBuildDir/bin:$PATH
-```
+
+### install boost_1_55_0
+wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz
+tar -xvzf boost_1_58_0.tar.gz
+cd boost_1_58_0
+
+sudo apt-get update
+sudo apt-get install build-essential g++ python-dev autotools-dev libicu-dev build-essential libbz2-dev libboost-all-dev
+sudo apt-get install aptitude
+aptitude search boost
+
+./bootstrap.sh --prefix=boost_1_58_0_build
+./b2
+./b2 install
+
+#The Boost C++ Libraries were successfully built!
+#add the lib and folder to paths
+export LD_LIBRARY_PATH=$PWD/boost_1_58_0_build/stage/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/boost_1_58_0_build:$PATH
+
+
+### install tbb44_20160526oss
+cd ..
+wget https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb44_20160526oss_src_0.tgz
+tar xvf tbb44_20160526oss_src_0.tgz
+sudo apt-get install libtbb-dev
+
+### install cmake for ubuntu: cmake 3.5.1
+sudo apt install cmake
+### install curl
+sudo apt install curl
+### install autoconf
+sudo apt-get install autoconf
+### install zlib
+sudo apt install zlib1g-dev
+sudo apt install zlib1g
+### update all installations
+sudo apt-get update
+
+### install MAX
+DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX-source-0.1.0 bash install.sh
+
+#The MAX was successfully built!
+###########
+
+#add lib and bin folders to paths
+export LD_LIBRARY_PATH=$PWD/Circall_0.1.0_build/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/Circall_0.1.0_build/bin:$PATH
+
+#done
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Construct the wild-type + mutant reference, reference index and the X matrix
 #### In Section 5 we show a test run of MAX just by copy and paste.

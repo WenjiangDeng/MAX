@@ -54,8 +54,8 @@ export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
 ##########################
 - download MAX
 ```sh
-wget xxxxxxxxxxxxxxxxxx
-tar -xzvf MAX-source-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/archive/v0.1.0.tar.gz
+tar -xzvf v0.1.0.tar.gz
 cd MAX-source-0.1.0
 
 #config to run MAX

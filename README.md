@@ -186,9 +186,9 @@ cd ..
 mkdir MAX_project
 cd MAX_project
 
-wget https://github.com/WenjiangDeng/MAX/raw/main/mutation_list.txt
-wget https://github.com/WenjiangDeng/MAX/raw/main/test_FLT3.gtf
-wget https://github.com/WenjiangDeng/MAX/raw/main/isoform_ref_FLT3_gene.fa
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/mutation_list.txt
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/test_FLT3.gtf
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/isoform_ref_FLT3_gene.fa
 
 ```
 - construct the wild-type+Mutant reference, reference index and the X matrix
@@ -203,7 +203,7 @@ bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g test_FLT3.gtf -r isoform
 - Download the test RNA-seq data of 10 samples
 ```sh
 
-wget https://github.com/WenjiangDeng/MAX/raw/main/RNA-seq_FLT3.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/RNA-seq_FLT3.tar.gz
 tar -xzvf RNA-seq_FLT3.tar.gz
 
 

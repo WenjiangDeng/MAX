@@ -4,7 +4,7 @@
 MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. 
 ## 2. The input data of MAX
 MAX requires several files as input, such as:
-- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of [the mutation file with the header](https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/mutation_list.txt): 
+- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of [the mutation file with the header](https://github.com/WenjiangDeng/MAX/raw/main/mutation_list.txt): 
 
 ![image](https://user-images.githubusercontent.com/40486459/110524071-36484600-8113-11eb-9d86-6369007b391c.png)
 

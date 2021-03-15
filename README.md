@@ -103,7 +103,7 @@ sudo apt-get update
 
 # install MAX
 DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX-source-0.1.0 bash install.sh
-```
+
 #The MAX was successfully built!
 ###########
 
@@ -112,6 +112,7 @@ export LD_LIBRARY_PATH=$PWD/Circall_0.1.0_build/lib:$LD_LIBRARY_PATH
 export PATH=$PWD/Circall_0.1.0_build/bin:$PATH
 
 #done
+```
 #### Do not forget to replace "/path/to/" by your local path.
 ## 3. Construct the wild-type + mutant reference, reference index and the X matrix
 #### In Section 5 we show a test run of MAX just by copy and paste.

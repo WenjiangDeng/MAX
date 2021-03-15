@@ -53,14 +53,16 @@ export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
 
 ##########################
 - download MAX
+```sh
 wget xxxxxxxxxxxxxxxxxx
 tar -xzvf MAX-source-0.1.0.tar.gz
 cd MAX-source-0.1.0
 
 #config to run MAX
 bash configure.sh
-
+```
 - install boost_1_55_0
+```sh
 wget http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.gz
 tar -xvzf boost_1_58_0.tar.gz
 cd boost_1_58_0
@@ -73,32 +75,35 @@ aptitude search boost
 ./bootstrap.sh --prefix=boost_1_58_0_build
 ./b2
 ./b2 install
-
+```
 #The Boost C++ Libraries were successfully built!
 #add the lib and folder to paths
+```sh
 export LD_LIBRARY_PATH=$PWD/boost_1_58_0_build/stage/lib:$LD_LIBRARY_PATH
 export PATH=$PWD/boost_1_58_0_build:$PATH
+```
 - install tbb44_20160526oss
+```sh
 cd ..
 wget https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb44_20160526oss_src_0.tgz
 tar xvf tbb44_20160526oss_src_0.tgz
 sudo apt-get install libtbb-dev
 
-- install cmake for ubuntu: cmake 3.5.1
+# install cmake for ubuntu: cmake 3.5.1
 sudo apt install cmake
-- install curl
+# install curl
 sudo apt install curl
-- install autoconf
+# install autoconf
 sudo apt-get install autoconf
-- install zlib
+# install zlib
 sudo apt install zlib1g-dev
 sudo apt install zlib1g
-- update all installations
+# update all installations
 sudo apt-get update
 
-- install MAX
+# install MAX
 DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX-source-0.1.0 bash install.sh
-
+```
 #The MAX was successfully built!
 ###########
 

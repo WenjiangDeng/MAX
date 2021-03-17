@@ -207,7 +207,7 @@ tar -xzvf RNA-seq_FLT3.tar.gz
 
 
 ```
-- Generate the eqclass table and Y count matrix
+- Generate the eqclass table and Y count matrix using 8 cores
 ```sh
 for ind in $(seq -f %02.0f  10); do
 MAX -i Index_reference -l IU -1 'fasta_flt3/sample_'$ind'_1.fasta' -2 'fasta_flt3/sample_'$ind'_2.fasta' -p 8 -o 'sample_'$ind 
@@ -218,7 +218,7 @@ Rscript ../MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X
 
 
 ```
-- Estimate mutant-allele expression using AEM algorithm
+- Estimate mutant-allele expression using AEM algorithm using 8 cores
 ```sh
 Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 

@@ -218,7 +218,7 @@ Rscript ../MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X
 
 
 ```
-- Estimate mutant-allele expression using AEM algorithm using 8 cores
+- Estimate mutant-allele expression using AEM algorithm with 8 cores
 ```sh
 Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 

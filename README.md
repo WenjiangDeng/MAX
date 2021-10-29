@@ -226,7 +226,7 @@ Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_m
 ```
 The final results are in the **mutant_expression.RData**, which contains the MAX_count and MAX_tpm objects. 
 ## MAX2
-MAX2 is an extension of MAX for heterogenous RNA-seq data. In MAX2, the construction of X matrix and the quasi-mapping step are the same as in MAX. The only difference is that before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
+MAX2 is an extension of MAX for heterogenous RNA-seq data analysis. In MAX2, the construction of X matrix and the quasi-mapping steps are the same as in MAX. The only difference is that before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
 
 - Merge mutation to generate Mutated_eqClass.txt. 
 ```sh

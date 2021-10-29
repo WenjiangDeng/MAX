@@ -232,7 +232,7 @@ MAX2 is an extension of MAX for heterogenous RNA-seq data. In MAX2, the construc
 ```sh
 Rscript mergeMutSingleSample.R sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=eqClass.txt
 ```
-# generate ycount and quantify using the AEM algorithm
+- Generate the ycount and quantify using the AEM algorithm
 ```sh
 Rscript genCountSample.R xmatEq=$xmatEqFn sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=$outdir/Mutated_eqClass.txt YcountDir=$Ycount_outdir
 

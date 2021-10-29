@@ -226,5 +226,6 @@ Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_m
 ```
 The final results are in the **mutant_expression.RData**, which contains the MAX_count and MAX_tpm objects. 
 ## MAX2
-MAX2 is an extension of MAX for heterogenous RNA-seq data.
+MAX2 is an extension of MAX for heterogenous RNA-seq data. Before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
+
 #### Reference: tba

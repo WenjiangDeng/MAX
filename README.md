@@ -227,16 +227,17 @@ Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_m
 The final results are in the **mutant_expression.RData**, which contains the MAX_count and MAX_tpm objects. 
 ## MAX2
 MAX2 is an extension of MAX for heterogenous RNA-seq data. In MAX2, the construction of X matrix and the quasi-mapping step are the same as in MAX. The only difference is that before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
-```
-- Estimate mutant-allele expression using AEM algorithm with 8 cores
+
+- Merge mutation to generate Mutated_eqClass.txt
 ```sh
-# merge mutation to generate Mutated_eqClass.txt
 Rscript mergeMutSingleSample.R sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=eqClass.txt
-# generate ycount
+```
+# generate ycount and quantify using the AEM algorithm
+```sh
 Rscript genCountSample.R xmatEq=$xmatEqFn sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=$outdir/Mutated_eqClass.txt YcountDir=$Ycount_outdir
-## quantification using AEM algorithm
+
 Rscript estimateBeta.R workdir=$Ycount_outdir sampleMut=$sampleMutFn out=MAX_isoform_expression_AEM.RData
 
 ```
-The estimation will be saved as isoformCount in MAX2_isoform_expression.RData.
+The estimation results will be saved as isoformCount in MAX2_isoform_expression.RData.
 #### Reference: tba

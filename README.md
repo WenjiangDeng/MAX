@@ -228,8 +228,9 @@ The final results are in the **mutant_expression.RData**, which contains the MAX
 ## MAX2
 MAX2 is an extension of MAX for heterogenous RNA-seq data. In MAX2, the construction of X matrix and the quasi-mapping step are the same as in MAX. The only difference is that before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
 
-- Merge mutation to generate Mutated_eqClass.txt
+- Merge mutation to generate Mutated_eqClass.txt. 
 ```sh
+# SampleMut has two columns, the first column is Sample name, the second column is the unique identifier of a mutation .SampleEq is the eqClass.txt file from previous quasi-mapping step.
 Rscript mergeMutSingleSample.R sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=eqClass.txt
 ```
 - Generate the ycount and quantify using the AEM algorithm
@@ -239,5 +240,5 @@ Rscript genCountSample.R xmatEq=$xmatEqFn sampleMut=$sampleMutFn sampleID=$sampl
 Rscript estimateBeta.R workdir=$Ycount_outdir sampleMut=$sampleMutFn out=MAX_isoform_expression_AEM.RData
 
 ```
-The estimation results will be saved as isoformCount in MAX2_isoform_expression.RData.
+The estimation results will be saved as isoformCount in **MAX2_isoform_expression.RData**.
 #### Reference: tba

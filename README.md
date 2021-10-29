@@ -230,7 +230,8 @@ MAX2 is an extension of MAX for heterogenous RNA-seq data analysis. In MAX2, the
 
 - Merge mutation to generate Mutated_eqClass.txt. 
 ```sh
-# SampleMut is a mutation file which shows a sample harboring an unique mutation, please see mutDat_NPM1.txt as an example
+# SampleMut is a two-column mutation file. Each row shows a sample harboring an unique mutation, please see mutDat_NPM1.txt as an example
+# sampleID is the name of input sample
 # SampleEq is the eqClass.txt file from previous quasi-mapping step.
 
 Rscript mergeMutSingleSample.R sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=eqClass.txt

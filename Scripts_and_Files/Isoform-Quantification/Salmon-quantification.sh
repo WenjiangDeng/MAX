@@ -52,7 +52,7 @@ salmon = s1
 save(salmon,file='salmon_simulate-100-mutated.RData')
 
 ######
-salmon=/proj/snic2020-6-4/wenjiang/MSE/dbref/npm1/Mutated-vs-NonMutated-Patients-NPM1_all-Mutations/non_mutated_patients-simulate/salmon/salmon-latest_linux_x86_64/bin/salmon
+salmon=/proj/snic2020-6-4/wenjiang/MSE/dbref/npm1/salmon-latest_linux_x86_64/bin/salmon
 
 module load bioinfo-tools
 module load R_packages/3.5.0
@@ -105,7 +105,7 @@ save(salmon,file='salmon_simulated-100-mutated.RData')
 ##############
 
 #Salmon
-salmon=/proj/snic2020-6-4/wenjiang/MSE/dbref/npm1/Mutated-vs-NonMutated-Patients-NPM1_all-Mutations/non_mutated_patients-simulate/salmon/salmon-latest_linux_x86_64/bin/salmon
+salmon=/proj/snic2020-6-4/wenjiang/MSE/dbref/npm1/salmon-latest_linux_x86_64/bin/salmon
 
 module load bioinfo-tools
 module load R_packages/3.5.0

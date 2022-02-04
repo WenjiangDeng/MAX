@@ -1,6 +1,6 @@
 
 	
-err = function(result_est,true){##sailfish2 and true are expanded
+err = function(result_est,true){##salmon and true are expanded
 
 	seq_err = matrix(0,nrow(result_est),1)
 	rownames(seq_err) = rownames(result_est)
@@ -20,19 +20,19 @@ rownames(sailfish1) = unique(unlist(strsplit(rownames(result_est)," ")))
 colnames(sailfish1) = colnames(result_est)
 sailfish1[rownames(sailfish1),] = Sailfish[rownames(sailfish1),]
 
-sailfish2 = matrix(0,nrow(result_est),100)
-rownames(sailfish2) = rownames(result_est)
-colnames(sailfish2) = colnames(result_est)
+salmon = matrix(0,nrow(result_est),100)
+rownames(salmon) = rownames(result_est)
+colnames(salmon) = colnames(result_est)
 rowname = rownames(result_est)
 tx = strsplit(rownames(result_est)," ")
 ntx = sapply(tx,length)
 rowname_sailfish = rownames(Sailfish)[ rownames(Sailfish) %in% rowname]
-sailfish2[rowname_sailfish,] = Sailfish[rowname_sailfish,]
+salmon[rowname_sailfish,] = Sailfish[rowname_sailfish,]
 pick = ntx>1
 tx2 = tx[pick]
 for(i in 1:length(tx2)){
- tmp = sailfish1[tx2[[i]],];tmp2 = colSums(tmp);sailfish2[paste(tx2[[i]],collapse=" "),] = tmp2;
+ tmp = sailfish1[tx2[[i]],];tmp2 = colSums(tmp);salmon[paste(tx2[[i]],collapse=" "),] = tmp2;
  }
-## sailfish2 
-return(sailfish2)
+## salmon 
+return(salmon)
 }

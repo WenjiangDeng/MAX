@@ -140,11 +140,6 @@ save(est,file='Est_ASEP_Varscan.RData')
 
 ## pindel 
 
-module load bioinfo-tools 
-module load samtools/1.14
-module load bwa/0.7.17
-module load python/3.7.2
-  
 
 ref=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/reference/hg19_chr13.fa
 wkdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/Pindel_BWA_alignment
@@ -186,7 +181,4 @@ ref=/proj/snic2020-6-4/Nghia/referenceDB/igenomes/Homo_sapiens/UCSC/hg19/Sequenc
 
 cd $wkdir
 done
-
-##get vcf for all SV types
-#/proj/snic2020-6-4/nobackup/Nghia/Working/ASE_isoform/revision2/Pindel/pindel-master/pindel2vcf -P $samplename -r $ref -R GRCh19 -d 20091123 -v $samplename.vcf -mc 1 -he 0.0
 

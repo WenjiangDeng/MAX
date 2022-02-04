@@ -55,42 +55,64 @@ samtools mpileup -r chr13:28577411-28674713 -f $fd/hg19_chr13.fa $outdir/$sample
 done
 
 
-## Post process
+## ASEP Post Analysis
+## prepare the input for ASE analysis
 
-wkdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul_WT_ref_XAEM/ASEP
+module load bioinfo-tools
+module load R_packages/3.5.0
+cd /crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/ASEP
 
-cd $wkdir
-R
-workdir='/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul_WT_ref_XAEM/ASEP'
-# flist1 = list.files(workdir,pattern="_varscan_SNP",recursive=TRUE,full.names = TRUE)
-# flist2 = list.files(workdir,pattern="_varscan_INDEL",recursive=TRUE,full.names = TRUE)
-options(stringsAsFactors = F)
-
-load('Ycount.RData')
-keep_sample=samplename1
-wt.ratio=rep(1,length(keep_sample))
-names(wt.ratio)=keep_sample
+keep_sample=as.vector(read.table('29sample')[,1])
+input.total=NULL
 for(i in 1:length(keep_sample))
 {
 cat(i,'\n')
+snp1=snp1.indel=input1=NULL
 sname=keep_sample[i]
-snp=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul_WT_ref_XAEM/ASEP/',sname,'/',sname,'_varscan_SNP'),header=TRUE,sep=':')[,2:3]
-
-snp.wt.ratio=indel.wt.ratio=NULL
-
-if(nrow(snp)>0)snp.wt.ratio=mean(snp[,2]/snp[,1])
-
-indel=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul_WT_ref_XAEM/ASEP/',sname,'/',sname,'_varscan_INDEL'),header=TRUE,sep=':')[,2:3]
-
-if(nrow(indel)>0)indel.wt.ratio=mean(indel[,2]/indel[,1])
-
-wt.ratio[sname]=mean(c(snp.wt.ratio,indel.wt.ratio))
+cat(sname,'\n')
+snp=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/',sname,'/',sname,'_varscan_SNP'),header=TRUE,sep=':')[,2:3]
+if(nrow(snp)>0)
+{snp1=data.frame(snp,gene='FLT3',id=sname,group='Mut')
+snp=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/',sname,'/',sname,'_varscan_SNP'),header=TRUE)[,1:2]
+tmp=apply(snp,1,function(x)return(paste0(x[1],':',x[2])))
+snp1$snp=tmp;snp1=snp1[,c(3,4,6,2,1,5)];colnames(snp1)[c(4,5)]=c('ref','total')
 }
 
-wt.ratio[is.na(wt.ratio)]=1
+indel=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/',sname,'/',sname,'_varscan_INDEL'),header=TRUE,sep=':')[,2:3]
+if(nrow(indel)>0)
+{snp1.indel=data.frame(indel,gene='FLT3',id=sname,group='Mut')
+snp.indel=read.table(paste0('/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/',sname,'/',sname,'_varscan_INDEL'),header=TRUE)[,1:2]
+tmp=apply(snp.indel,1,function(x)return(paste0(x[1],':',x[2])))
+snp1.indel$snp=tmp;snp1.indel=snp1.indel[,c(3,4,6,2,1,5)];colnames(snp1.indel)[c(4,5)]=c('ref','total')
+}
+input1=rbind(snp1,snp1.indel)
+input.total=rbind(input.total,input1)
 
+}
+
+save(input.total,file='ASEP.input.total.RData')
+
+#########
+
+module load bioinfo-tools
+module load R_packages/3.5.0
+cd /crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/ASEP
+
+R
+library(ASEP)
+library(ggplot2)
+load('ASEP.input.total.RData')
+input.total=input.total[ input.total$ref!=0,]
+input.total$id=gsub('_1.fasta','',input.total$id)
+ASE_detection(dat_all = input.total, phased=FALSE, varList=NULL, adaptive=TRUE, n_resample=10^3, parallel=FALSE, save_out=FALSE)
+
+ase.phased=phasing(input.total, phased=FALSE, n_condition="one")
+
+plot_ASE(ase.phased, phased=FALSE) 
+ggsave(paste0('ASE-29-samples','.png'),width = 8, height = 5,bg='white')
+
+wt.ratio = ase.phased
 save(wt.ratio,file='keep_100_sample_WT_ratio.RData')
-
 
 ## combine XAEM results
 load('keep_100_sample_WT_ratio.RData')

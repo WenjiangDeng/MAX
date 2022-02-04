@@ -12,7 +12,6 @@
 
 module load bioinfo-tools 
 module load  star/2.7.9a
-
 module load samtools/1.14
 module load VarScan/2.4.2
 
@@ -24,7 +23,6 @@ fqdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul/fasta
 wkdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/One_SNV_simul_WT_ref_XAEM/ASEP
 output=$wkdir
 cd $wkdir
-
 for fn in $(find  $fqdir -type f -name "*_1.fasta")
 do
 echo "$fn"
@@ -37,7 +35,6 @@ fn2=$(echo $fn2"_2.fasta")
 echo $outdir
 mkdir -p $outdir
 cd $outdir
-
 STAR --genomeDir $fd/chr13_hg19_index \
 --runThreadN 8 \
 --readFilesIn $fn $fn2 \
@@ -47,13 +44,9 @@ STAR --genomeDir $fd/chr13_hg19_index \
 --outSAMattributes Standard 
 
 samtools index  $outdir/$sample"_Aligned.sortedByCoord.out.bam"
- 
 samtools mpileup -r chr13:28577411-28674713 -f $fd/hg19_chr13.fa $outdir/$sample"_Aligned.sortedByCoord.out.bam" | java -jar  /crex/proj/snic2020-6-4/wenjiang/MSE/revision2/software/VarScan.v2.3.9.jar mpileup2snp --min-coverage 1  --min-avg-qual 15 --min-var-freq 0.0001 --p-value 0.95 >$outdir/$sample"_varscan_SNP"
-
 samtools mpileup -r chr13:28577411-28674713 -f $fd/hg19_chr13.fa $outdir/$sample"_Aligned.sortedByCoord.out.bam" | java -jar  /crex/proj/snic2020-6-4/wenjiang/MSE/revision2/software/VarScan.v2.3.9.jar mpileup2indel --min-coverage 1  --min-avg-qual 15 --min-var-freq 0.0001 --p-value 0.95 >$outdir/$sample"_varscan_INDEL"
-
 done
-
 
 ## ASEP Post Analysis
 ## prepare the input for ASE analysis
@@ -87,7 +80,6 @@ snp1.indel$snp=tmp;snp1.indel=snp1.indel[,c(3,4,6,2,1,5)];colnames(snp1.indel)[c
 }
 input1=rbind(snp1,snp1.indel)
 input.total=rbind(input.total,input1)
-
 }
 
 save(input.total,file='ASEP.input.total.RData')
@@ -107,10 +99,8 @@ input.total$id=gsub('_1.fasta','',input.total$id)
 ASE_detection(dat_all = input.total, phased=FALSE, varList=NULL, adaptive=TRUE, n_resample=10^3, parallel=FALSE, save_out=FALSE)
 
 ase.phased=phasing(input.total, phased=FALSE, n_condition="one")
-
 plot_ASE(ase.phased, phased=FALSE) 
 ggsave(paste0('ASE-29-samples','.png'),width = 8, height = 5,bg='white')
-
 wt.ratio = ase.phased
 save(wt.ratio,file='keep_100_sample_WT_ratio.RData')
 
@@ -139,13 +129,10 @@ colnames(est)=c(colnames(est1),iso.mut)
 save(est,file='Est_ASEP_Varscan.RData')
 
 ## pindel 
-
-
 ref=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/reference/hg19_chr13.fa
 wkdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision2/FLT3/Pindel_BWA_alignment
 fqdir=/crex/proj/snic2020-6-4/wenjiang/MSE/revision1/flt3_ITD_simul_real_beatAML_correct/fasta_file
 cd $wkdir
-
 for fn in $(find  $fqdir -type f -name "*_1.fasta")
 do
 echo "$fn"
@@ -157,7 +144,6 @@ fn2=$(echo $fn2"_2.fasta")
 echo $outdir
 mkdir -p $wkdir/$outdir
 cd $wkdir/$outdir
-
 read1=$fn
 read2=$fn2
 samplename=$sample
@@ -166,7 +152,6 @@ samplename=$sample
 bwa mem /proj/snic2020-6-4/Nghia/referenceDB/igenomes/Homo_sapiens/UCSC/hg19/Sequence/BWAIndex/genome.fa $read1 $read2 -t 8 | samtools sort > $wkdir/$outdir/$samplename".bam"
 # Index BAM
 samtools index $wkdir/$outdir/$samplename".bam"
-
 #make a config file
 echo $wkdir/$outdir/$samplename".bam" 250 $samplename > $wkdir/$outdir/$samplename".config"
 
@@ -178,7 +163,6 @@ ref=/proj/snic2020-6-4/Nghia/referenceDB/igenomes/Homo_sapiens/UCSC/hg19/Sequenc
 /proj/snic2020-6-4/nobackup/Nghia/Working/ASE_isoform/revision2/Pindel/pindel-master/pindel -f $ref -c chr13 -o $samplename -i $wkdir/$outdir/$samplename".config" --report_breakpoints FALSE --window_size 10 -T 8
 #get vcf for TD only
 /proj/snic2020-6-4/nobackup/Nghia/Working/ASE_isoform/revision2/Pindel/pindel-master/pindel2vcf -p $wkdir/$outdir/$samplename"_TD" -r $ref -R GRCh19 -d 20091123 -v $wkdir/$outdir/$samplename.vcf -mc 3 -he 0.0 -c chr13
-
 cd $wkdir
 done
 

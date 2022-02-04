@@ -1,3 +1,7 @@
+#####
+## R scripts to cacluate the Absolute-Proportinal-Error (APE) using Salmon and MAX estimations
+## plot the estimates against true values from simulation
+#####
 source('APE-source.R')
 
 load('True_counts_for_this_run.RData')

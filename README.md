@@ -4,10 +4,11 @@
 MAX is a novel method to quantify the Mutant-Allele eXpression (MAX) at isoform level from RNA-seq data. 
 ## 1. The input data of MAX
 MAX requires several files as input, such as:
-- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of [the mutation file with the header](https://github.com/WenjiangDeng/MAX/raw/main/mutation_list.txt): 
+- A list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence and gene names. Here is an example of [the mutation file with the header](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list.txt): 
 
 ![image](https://user-images.githubusercontent.com/40486459/110524071-36484600-8113-11eb-9d86-6369007b391c.png)
 
+If using MAX2, an extra column "Samples" consisting of IDs of samples carrying the mutaions, [see the an example of the mutation file for MAX2 here](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list_MAX2.txt): 
 
 #### (Please make sure if the mutations are detected using hg19 or hg38 assembly)
 
@@ -31,31 +32,31 @@ wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 
 - Download the latest binary version from the MAX release:
 ```sh
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/MAX-binary-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
 
 ```
 - Uncompress to folder
 ```sh
-tar -xzvf MAX-binary-0.1.0.tar.gz
+tar -xzvf MAX-binary-0.2.0.tar.gz
 ```
 - Move to the MAX_home directory and do configuration for MAX
 ```sh
-cd MAX-binary-0.1.0
+cd MAX-binary-0.2.0
 bash configure.sh
 ```
 - Add paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
 ```sh
-export LD_LIBRARY_PATH=/path/to/XAEM-binary-0.1.0/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/XAEM-binary-0.1.0/bin:$PATH
+export LD_LIBRARY_PATH=/path/to/MAX-binary-0.2.0/lib:$LD_LIBRARY_PATH
+export PATH=/path/to/MAX-binary-0.2.0/bin:$PATH
 #Done
 ```
 #### If you want to build MAX from sources:
 
 - download MAX
 ```sh
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/MAX-source-0.1.0.tar.gz
-tar -xzvf MAX-source-0.1.0.tar.gz
-cd MAX-source-0.1.0
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-source-0.2.0.tar.gz
+tar -xzvf MAX-source-0.2.0.tar.gz
+cd MAX-source-0.2.0
 
 #config to run MAX
 bash configure.sh
@@ -101,76 +102,75 @@ sudo apt install zlib1g
 sudo apt-get update
 
 # install MAX
-DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX-source-0.1.0 bash install.sh
+DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX_0.2.0_build bash install.sh
 
 #The MAX was successfully built!
 ###########
 
 #add lib and bin folders to paths
-export LD_LIBRARY_PATH=$PWD/Circall_0.1.0_build/lib:$LD_LIBRARY_PATH
-export PATH=$PWD/Circall_0.1.0_build/bin:$PATH
+export LD_LIBRARY_PATH=$PWD/MAX_0.2.0_build/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/MAX_0.2.0_build/bin:$PATH
 
 #done
 ```
 #### Do not forget to replace "/path/to/" by your local path.
-## 3. Construct the wild-type + mutant reference, reference index and the X matrix
-#### In Section 5 we show a test run of MAX just by copy and paste.
-This step will produce (1) the reference which contains both wild-type and mutant alleles; (2) the index for the reference and (3) the X matrix (design matrix). This step requires the following input files: a list of mutations, the GTF file, the wild-type transcriptome reference, the version of gene model ("hg19" or "hg38") and the working directory. When you have prepared these files, the command to start the analysis is:
 
+
+## 3. Parameter settings
+
+The examples of parameter setting files can be downloaded here: [1) param file for running MAX](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_params.sh) and [2) param file for running MAX2](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_paramsMAX2.sh).
+The param file requires the following parameter:
+
+- **mutlist**: a file contains a list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence, and gene names. If you want to run MAX2, an extra column "Sample" is required. Examples of mutation lists to run MAX and MAX2 are provided here: [PUT THE LINK].
+- **gtffile**: gtf of the gene carring mutations
+- **fastafile**: sequences of the transcripts of the gene
+- **hgversion**: annotation version of the human genome: hg19 or hg38
+- **CPUNUM**: the number of threads
+- **INPUT**: the path to the folder of the input fastq.gz files
+- **OUTPUT**: the path to the output folder
+- **useMAX2**: use MAX2 (1) or not (0)
+
+## 4. Run MAX
+Given a params.sh with the proper parameter setting for your data, there are two ways to run MAX: 1) using the installed version and 2) using docker.
+- To run with the installed version:
 ```sh
-# wget https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/genes/hg38.refGene.gtf.gz 
-# wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz
+# Download the binary version of MAX
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
 
-bash MAX.sh -m mutation_list.txt -g hg38.refGene.gtf -r refMrna.fa -v hg38 -d /path/to/directory
+# Configure the tool
+tar -xzvf MAX-binary-0.2.0.tar.gz
+cd MAX-binary-0.2.0
+bash configure.sh
+# Add the paths to system
+export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/bin:$PATH
+cd ..
 
+# run MAX
+runMAX.sh -param params.sh
 ```
-The outputs will be: **WT_Mut_reference.fa**, **X_matrix.RData** and the **Index_reference** folder.
-## 4. Quantifcation of mutant-allele expression
-Suppose we already created a working directory “MAX_project” (/path/to/MAX_project/) for the quantification.
-### 4.1 Generate the equivalence class table and Y count matrix
-- The command to generate equivalence class table for each sample is similar with [“salmon quant”](https://salmon.readthedocs.io/en/latest/salmon.html#using-salmon). The input parameters are the Index_reference folder and the RNA-seq data. The "-l" option defines the [library type of reads](https://salmon.readthedocs.io/en/latest/salmon.html#what-s-this-libtype). Below shows the example if we want to run MAX for sample1 and sample2 with 8 cpus:
+- To run with docker,
 ```sh
-MAX -i /path/to/Index_reference -l IU -1 s1_read1.fasta -2 s1_read2.fasta -p 8 -o /path/to/MAX_project/sample1 
-MAX -i /path/to/Index_reference -l IU -1 s2_read1.fasta -2 s2_read2.fasta -p 8 -o /path/to/MAX_project/sample2 
-```
-- If the data is compressed in gz format, we can combine "gunzip" in the command:
-```sh
-MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s1_read1.gz) -2 <(gunzip -c s1_read2.gz) -p 8 -o /path/to/MAX_project/sample1 
-MAX -i /path/to/Index_reference -l IU -1 <(gunzip -c s2_read1.gz) -2 <(gunzip -c s2_read2.gz) -p 8 -o /path/to/MAX_project/sample2 
-```
-- After running MAX there will be the output of the equivalence class table for multiple samples. We then create the Y count matrix. For example, if we want to run MAX parallelly using 8 cores, the command is:
+# Pull the docker image of MAX:
+sudo docker pull nghiavtr/max:v0.2.0
 
-```sh
-Rscript Create_count_matrix.R design.matrix=/path/to/X_matrix.RData workdir=/path/to/MAX_project core=8
+# run MAX via the docker:
+runMAXdocker.sh -param params.sh
 ```
-### 4.2 Estimate the transcript expression using AEM algorithm
-When the Y count matrix is constructed, we can use the AEM algorithm to quantify the mutant-allele expression. The command is as follows:
 
-```sh
-Rscript AEM_update_X_beta.R workdir=/path/to/MAX_project design.matrix=/path/to/X_matrix.RData max.out=/path/to/mutant_expression.RData remove.ycount=TRUE core=8
-```
-#### Parameter setting
-- **workdir**: the path to working directory
-- **design.matrix**: the path to the design matrix
-- **max.out**: the output file for isoform expression
-- **remove.ycount** (default=TRUE): to clean all data of Ycount after use
-- **core**: the number of cpu cores for parallel computing, default is 8.
+The final results are in the MAX_isoform_expression.RData or MAX2_isoform_expression.RData (if using MAX2), which contains two objects: the **isoform_count** for the read counts value and **isoform_tpm** for the TPM (Transcripts Per Kilobase Million) value.
 
-The final results are in the mutant_expression.RData, which contains two objects: the **MAX_count** for the read counts value and **MAX_tpm** for the TPM (Transcripts Per Kilobase Million) value.
 ## 5. A trial run of MAX by copy and paste
 This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in Acute Myeloid Leukemia (AML). 
 
 - Download the binary file of MAX and configure the path
 ```sh
-# Create a working folder
-mkdir MAX_binary
-cd MAX_binary
 # Download the binary version of MAX
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/MAX-binary-0.1.0.tar.gz
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
 
 # Configure the tool
-tar -xzvf MAX-binary-0.1.0.tar.gz
-cd MAX-binary-0.1.0
+tar -xzvf MAX-binary-0.2.0.tar.gz
+cd MAX-binary-0.2.0
 bash configure.sh
 # Add the paths to system
 export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
@@ -180,69 +180,73 @@ cd ..
 
 
 ```
-- Download the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene
-```sh
-mkdir MAX_project
-cd MAX_project
 
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/mutation_list.txt
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/test_FLT3.gtf
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/isoform_ref_FLT3_gene.fa
-
-```
-- construct the wild-type+Mutant reference, reference index and the X matrix
-```sh
-# This step can take several minutes
-
-bash ../MAX-binary-0.1.0/MAX.sh -m mutation_list.txt -g test_FLT3.gtf -r isoform_ref_FLT3_gene.fa -v hg19 -d $PWD
-
-
-
-```
 - Download the test RNA-seq data of 10 samples
 ```sh
 
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.1.0/RNA-seq_FLT3.tar.gz
-tar -xzvf RNA-seq_FLT3.tar.gz
+wget https://www.meb.ki.se/sites/biostatwiki/wp-content/uploads/sites/4/2022/02/testData.tar.gz
+tar -xzvf testData.tar.gz
 
+#move all data of testData folder to the current folder
+mv testData/* ./
 
 ```
-- Generate the eqclass table and Y count matrix using 8 cores
+
+
+- Download the test RNA-seq data of 10 samples
 ```sh
-for ind in $(seq -f %02.0f  10); do
-MAX -i Index_reference -l IU -1 'fasta_flt3/sample_'$ind'_1.fasta' -2 'fasta_flt3/sample_'$ind'_2.fasta' -p 8 -o 'sample_'$ind 
-done
 
-Rscript ../MAX-binary-0.1.0/R/Create_count_matrix.R workdir=$PWD design.matrix=X_matrix.RData core=8
-
+tar -xzvf test_FLT3_data.tar.gz
 
 
 ```
-- Estimate mutant-allele expression using AEM algorithm with 8 cores
+
+- List of the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene
 ```sh
-Rscript ../MAX-binary-0.1.0/R/AEM_update_X_beta.R workdir=$PWD design.matrix=X_matrix.RData max.out=mutant_expression.RData core=8
 
+
+# annotations for example gene: FLT3
+#test_FLT3.gtf
+#test_transcripts_FLT3.fa
+
+# mutation list and parameters to run MAX
+#test_mutation_list.txt
+#test_params.sh
+
+# mutation list and parameters to run MAX2
+#test_mutation_list_MAX2.txt
+#test_paramsMAX2.sh
 
 ```
-The final results are in the **mutant_expression.RData**, which contains the MAX_count and MAX_tpm objects. 
-## MAX2
-MAX2 is an extension of MAX for heterogenous RNA-seq data analysis. In MAX2, the construction of X matrix and the quasi-mapping steps are the same as in MAX. The only difference is that before isoform quantification, MAX2 will cluster heterogenous samples based on their mutation profile.
 
-- Merge mutation to generate Mutated_eqClass.txt. 
+
+- To run using installed MAX
 ```sh
-# SampleMut is a two-column mutation file. Each row shows a sample harboring an unique mutation, please see mutDat_NPM1.txt as an example
-# sampleID is the name of input sample
-# SampleEq is the eqClass.txt file from previous quasi-mapping step.
+### This step can take several minutes
+# run MAX
+bash MAX-binary-0.2.0/runMAX.sh -param test_params.sh
 
-Rscript mergeMutSingleSample.R sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=eqClass.txt
+# run MAX2
+bash MAX-binary-0.2.0/runMAX.sh -param test_paramsMAX2.sh
+
 ```
-- Generate the ycount and quantify using the AEM algorithm
+
+
+- To run using docker, we suppose docker was installed in your system
 ```sh
-Rscript genCountSample.R xmatEq=$xmatEqFn sampleMut=$sampleMutFn sampleID=$sampleFn sampleEq=$outdir/Mutated_eqClass.txt YcountDir=$Ycount_outdir
+### This step can take several minutes
 
-Rscript estimateBeta.R workdir=$Ycount_outdir sampleMut=$sampleMutFn out=MAX_isoform_expression_AEM.RData
+# Pull the docker image of MAX:
+sudo docker pull nghiavtr/max:v0.2.0
+
+# run MAX via the docker:
+bash MAX-binary-0.2.0/runMAXdocker.sh -param test_params.sh
+
+
+# run MAX2 via the docker:
+bash MAX-binary-0.2.0/runMAXdocker.sh -param test_paramsMAX2.sh
 
 ```
-The estimation results will be saved as isoformCount in **MAX2_isoform_expression.RData**.
+
 
 #### Reference: tba

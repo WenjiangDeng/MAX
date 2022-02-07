@@ -155,57 +155,59 @@ XAEM_tpm=t(XAEM_tpm)
 MAX_count=XAEM_count
 MAX_tpm=XAEM_tpm
 attr(MAX_count,'conv')=NULL
-save(MAX_count, MAX_tpm,file=foutr)
+isoform_count=MAX_count
+isoform_tmp=MAX_tpm
+save(isoform_count, isoform_tmp,file=foutr)
 
-## expand isoforms can not separated from CRP 
-## isoform.method (value=average/total)
-
-paralogID=which(txNum >1)
-paralog_count=XAEM_count[paralogID,]
-paralog_tpm=XAEM_tpm[paralogID,]
-
-#get mapping ID
-if(length(paralogID)>0)
-{
-matchID=sapply(c(1:length(paralogID)), function(x) rep(paralogID[x],txNum[paralogID][x]))
-matchID=unlist(matchID)
-#get isoform names
-matchNames=sapply(c(1:length(paralogID)), function(x) unlist(strsplit(names(paralogID[x])," ")))
-matchNames=unlist(matchNames)
-#update to data XAEM_count
-expandDat=matrix(0,ncol = ncol(XAEM_count), nrow = sum(txNum[paralogID]))
-expandDat=XAEM_count[matchID,] #if (isoform.method=="total"):the counts of isoform members are equal to the count of paralog
-if (isoform.method=="average"){ #the counts of isoform members are equal to the average count of paralog
-  expandDat_txnum=txNum[match(names(matchID),names(txNum))]
-  expandDat2=apply(cbind(expandDat_txnum,expandDat),1,function(x) x[-1]/x[1])
-  expandDat=t(expandDat2)
-}
-rownames(expandDat)=matchNames
-isoform_count=XAEM_count
-isoform_count=rbind(isoform_count,expandDat)
-isoform_count=isoform_count[-paralogID,]
-##recalculate TPM
-txLen2=txlength[match(rownames(isoform_count),names(txlength))]
-isoform_lenNorm=apply(isoform_count,2,function(x)return(x/txLen2))
-libsize_lenNorm=apply(isoform_lenNorm,2,sum)
-isoform_tpm=apply(isoform_lenNorm,1,function(x) return(x*1e6/libsize_lenNorm))
-isoform_tpm=t(isoform_tpm)
-
-#export to file
-pick=names(txlength) %in% rownames(isoform_count)
-pick=which(!pick)
-if(length(pick)>0){
-  newDat=matrix(0,ncol = ncol(isoform_count), nrow = length(pick))
-  rownames(newDat)=names(txlength)[pick]
-  colnames(newDat)=colnames(isoform_count)
-  isoform_count=rbind(isoform_count,newDat)
-  isoform_tpm=rbind(isoform_tpm,newDat)
-}
-isoform_count=isoform_count[names(txlength),]
-isoform_tpm=isoform_tpm[names(txlength),]
-
-#save(isoform_count,isoform_tpm,file=fout)
-}
+### expand isoforms can not separated from CRP 
+### isoform.method (value=average/total)
+#
+#paralogID=which(txNum >1)
+#paralog_count=XAEM_count[paralogID,]
+#paralog_tpm=XAEM_tpm[paralogID,]
+#
+##get mapping ID
+#if(length(paralogID)>0)
+#{
+#matchID=sapply(c(1:length(paralogID)), function(x) rep(paralogID[x],txNum[paralogID][x]))
+#matchID=unlist(matchID)
+##get isoform names
+#matchNames=sapply(c(1:length(paralogID)), function(x) unlist(strsplit(names(paralogID[x])," ")))
+#matchNames=unlist(matchNames)
+##update to data XAEM_count
+#expandDat=matrix(0,ncol = ncol(XAEM_count), nrow = sum(txNum[paralogID]))
+#expandDat=XAEM_count[matchID,] #if (isoform.method=="total"):the counts of isoform members are equal to the count of paralog
+#if (isoform.method=="average"){ #the counts of isoform members are equal to the average count of paralog
+#  expandDat_txnum=txNum[match(names(matchID),names(txNum))]
+#  expandDat2=apply(cbind(expandDat_txnum,expandDat),1,function(x) x[-1]/x[1])
+#  expandDat=t(expandDat2)
+#}
+#rownames(expandDat)=matchNames
+#isoform_count=XAEM_count
+#isoform_count=rbind(isoform_count,expandDat)
+#isoform_count=isoform_count[-paralogID,]
+###recalculate TPM
+#txLen2=txlength[match(rownames(isoform_count),names(txlength))]
+#isoform_lenNorm=apply(isoform_count,2,function(x)return(x/txLen2))
+#libsize_lenNorm=apply(isoform_lenNorm,2,sum)
+#isoform_tpm=apply(isoform_lenNorm,1,function(x) return(x*1e6/libsize_lenNorm))
+#isoform_tpm=t(isoform_tpm)
+#
+##export to file
+#pick=names(txlength) %in% rownames(isoform_count)
+#pick=which(!pick)
+#if(length(pick)>0){
+#  newDat=matrix(0,ncol = ncol(isoform_count), nrow = length(pick))
+#  rownames(newDat)=names(txlength)[pick]
+#  colnames(newDat)=colnames(isoform_count)
+#  isoform_count=rbind(isoform_count,newDat)
+#  isoform_tpm=rbind(isoform_tpm,newDat)
+#}
+#isoform_count=isoform_count[names(txlength),]
+#isoform_tpm=isoform_tpm[names(txlength),]
+#
+##save(isoform_count,isoform_tpm,file=fout)
+#}
 
 ### clean Ycount
 if (remove.ycount){

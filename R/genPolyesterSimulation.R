@@ -11,19 +11,19 @@ outdir = as.character(args[2])
 
 if(!require(polyester))
 {
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!suppressMessages(suppressWarnings(requireNamespace("BiocManager", quietly = TRUE))))
     install.packages("BiocManager")
 	BiocManager::install("polyester")
 }
-if(!require(Biostrings))
+if(!suppressMessages(suppressWarnings(require(Biostrings))))
 {
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 	BiocManager::install("Biostrings")
 }
 
-library(polyester)
-library(Biostrings)
+suppressMessages(suppressWarnings(library(polyester)))
+suppressMessages(suppressWarnings(library(Biostrings)))
 
 fasta = readDNAStringSet(fasta_file)
 # generate reads with coverage of 2

@@ -4,9 +4,9 @@
 # Run for X-matrix generation
 # - Rscript mergeMutSingleSample.R sampleEq=$inputFn
 
-inputFn="sample_01_1.fasta/eqClass.txt"
-#sampleMutFn="mutDat_TP53.txt"
-#sampleFn="sample_01_1.fasta"
+inputFn="sample_10/eqClass.txt"
+sampleMutFn="MAX_mut_list_keepMutID.txt"
+sampleFn="sample_10"
 sampleMutFn="NotUse"
 sampleFn="NotUse"
 
@@ -22,27 +22,39 @@ for (i in 1:length(args)){
 }
 
 
-source("Rfunctions.R")
+source("/path/to/R/Rsource.R")
 
 doc1=inputFn
 cat("\n Processing ",doc1)
 a = read.table(doc1,header=TRUE, stringsAsFactors=FALSE)
 
+mut.list=read.csv(sampleMutFn,header=TRUE, sep="\t",stringsAsFactors = FALSE)
+if (!("Samples" %in% colnames(mut.list))){
+  cat("\n There is no column 'Samples' containing the information of sample list for each mutation in the mutation list file!!!")
+  sampleMutFn=="NotUse"
+}
+
 condition=sampleFn=="NotUse" | sampleMutFn=="NotUse"
 
 if (!condition){
   cat("\n Create final mutant isoforms relevant to the mutations of the sample.")
-  fileMutDat=read.csv(sampleMutFn,header=FALSE, sep="\t",stringsAsFactors = FALSE)
-  mutID=fileMutDat$V2[fileMutDat$V1 == sampleFn]
-  myMut=unlist(strsplit(mutID,";"))
+
+  #Nghia /05Feb2022:
+  s=mut.list$Samples
+  names(s)=mut.list$MutID
+  sMap=sapply(s,function(x) sort(unique(trimws(strsplit(x,",")[[1]]))))
+  sAll=unique(unlist(sMap))
+
+  myMut=NULL
+  for (i in 1:length(sMap)) if (sampleFn %in% sMap[[i]]){
+    myMut=c(myMut,names(sMap)[i])
+  }
 
   txAll=unique(a$Transcript)
   pick=grep("mut",txAll)
   txMut=txAll[pick]
   txWt=txAll[-pick]
-  #mutList=sapply(txMut,function(x) strsplit(x,"_mut_")[[1]][2])
-  #mutList=unique(mutList)
-  #names(mutList)=NULL
+
   selectedTxMut=sapply(myMut,function(x) txMut[grep(x,txMut)])
   selectedTxMut=unique(unlist(c(selectedTxMut)))
   txSelected=c(txWt,selectedTxMut)
@@ -93,4 +105,3 @@ allTx=sort(unique(as.character(a$Transcript)))
 tt=allTx[grep("mut",allTx,invert=TRUE)]
 z_merge=mergeMut(a,tt)
 write.table(z_merge,file=doc2,quote=F,row.names=F,sep='\t')
-

@@ -1,3 +1,5 @@
+## 06 Feb 2022/ Nghia:
+# add extra functions for MAX2
 ## 28 Jan 2021/ YP
 ## revise AEM() and estim.BETA() to 
 ##   (i) allow starting value beta0 for AEM.
@@ -779,5 +781,374 @@ getSE <-function(X,b,y){
       SE = rbind(SE,se)
     }
     return(SE)
+}
+
+###### MAX2
+
+buildMutantIso<-function(trueCount){
+  #merge all mutant isoforms into a single mutant isoform
+  pick=grep("mut",rownames(trueCount))
+  wtIso=rownames(trueCount)[-pick]
+  trueCountOut=trueCount[-pick,]
+  mutCount=NULL
+  for (tx in wtIso){
+   pick1= grep(tx,rownames(trueCount))
+   pick2=intersect(pick,pick1)
+   countVal=colSums(trueCount[pick2,drop=FALSE,])
+   mutCount=rbind(mutCount,countVal)
+  }
+  rownames(mutCount)=paste0(wtIso,"_mut_all")
+  trueCountOut=rbind(trueCountOut,mutCount)
+  trueCountOut=trueCountOut[order(rownames(trueCountOut)),]
+  return(trueCountOut)
+}
+
+buildParalogIso<-function(countDat,paralogs){
+  #merge isoforms to paralogs
+  paraCount=NULL
+  for (p in paralogs){
+    tx=trimws(unlist(strsplit(p," ")))
+    pick=rownames(countDat) %in% tx
+    countVal=colSums(countDat[pick,drop=FALSE,])
+    paraCount=rbind(paraCount,countVal)
+  }
+  rownames(paraCount)=paralogs
+  return(paraCount)
+}
+
+mergeMut<-function(a,tt){
+
+options(StringsAsFactors=F)
+a_merge = NULL
+for(i in unique(a$eqClass)){
+  b =  NULL
+   
+  b = subset(a,eqClass==i)
+  
+  for(isoform in paste0(tt,'_mut'))
+   {
+   
+   index119 = grep(isoform,b$Transcript)
+   if(length(index119)>1)
+    {
+     b119 = colSums(b[index119,2:6])
+     b119[2:5] = b119[2:5]/length(index119)
+     b119 = matrix(b119,nrow=1)
+     b119 = data.frame(Transcript=paste0(isoform,'_all'),b119)
+     colnames(b119) = names(b)
+     b = rbind(b119,b[grep(isoform,b$Transcript,invert=T),])
+    }
+   }
+   
+  
+    a_merge = rbind(a_merge,b)
+    
+}
+  
+rownames(a_merge) = c(1:nrow(a_merge))
+x = a_merge
+x$Transcript = gsub("_mut_[[:print:]]+$",'_mut_all',x$Transcript)#letters, numbers, punctuation, and whitespace.
+#x$Transcript = gsub("_mut_[[:alnum:]]+$",'_mut_all',x$Transcript)
+#x$Transcript = gsub("_mut_[0-9]{1,}",'_mut_all',x$Transcript)
+#unique(x$Transcript)
+
+
+#need to merge the same eqclasses after reduction
+x_reduced=NULL
+for(i in unique(x$eqClass)){
+x1 = NULL
+x1 = subset(x,eqClass==i)
+x1 = x1[!duplicated(x1$Transcript),]
+x1 = x1[order(x1$Transcript),]
+x_reduced=rbind(x_reduced,x1)
+}
+
+x=x_reduced
+x_reduced=NULL
+
+x_merge = NULL
+for(i in unique(x$eqClass)){ 
+  x1 = NULL
+  x1 = subset(x,eqClass==i)
+  x1 = x1[order(x1$Transcript),]
+  x1 = cbind(x1,Isoform=paste(x1$Transcript,collapse='_'))
+  x_merge = rbind(x_merge,x1)
+}
+
+
+
+z_merge = NULL
+allIsoforms=unique(x_merge$Isoform)
+for(i in 1:length(allIsoforms)){ 
+  b = NULL
+  b = subset(x_merge,Isoform==allIsoforms[i])[,-7]
+  b1 = rbind(tapply(b$Weight,b$Transcript,sum),tapply(b$Count,b$Transcript,sum),tapply(b$EffLength,b$Transcript,mean),tapply(b$RefLength,b$Transcript,mean))
+  b1 = t(b1)
+  b2 = data.frame(Transcript=rownames(b1),b1,eqClass=i)
+  colnames(b2) = colnames(b)
+  z_merge = rbind(z_merge,b2)
+}
+rownames(z_merge) = c(1:nrow(z_merge))
+
+return(z_merge)
+}
+
+
+
+getCRP <- function(rawmat,H_thres=0.025,ncore=1){
+
+  library(foreach)
+  library(doParallel)
+  registerDoParallel(ncore)
+
+  tx2eqc = tapply(rawmat$eqClass,rawmat$Transcript,c)  ## map: tx --> eqClass 
+  a = sapply(tx2eqc, length)
+  #table(a)
+  eqc2tx = tapply(rawmat$Transcript, rawmat$eqClass,c) ## map: eqClass --> tx
+
+  # neighbors of each tx
+  fn = function(i) {eqc=as.character(tx2eqc[[i]]);
+  unique(unlist(eqc2tx[eqc]))
+  }
+
+
+  system.time(NB <- foreach(i=1:length(tx2eqc)) %dopar% fn(i) )  ## about 25sec 
+  names(NB) = names(tx2eqc)
+
+  ### build transcript clusters - new codes
+
+  #convert name of tx to index
+  txi=seq(length(NB))
+  NBi=NB
+  names(NBi)=txi
+  #map from tx to crp
+  t2c_map=unlist(NBi,use.names=FALSE)
+  t2c_mapi=match(t2c_map,names(NB))
+  t2c_mapi_group=rep(txi, lengths(NBi))
+  NBi2=tapply(t2c_mapi,t2c_mapi_group,c)
+  NBi=NBi2
+
+  f1=sapply(NBi,function(x) min(x))
+  f2=sapply(NBi,function(x) min(f1[x]))
+
+  growTimes=1
+  isOK=FALSE
+  repeat{  
+    f2=sapply(NBi,function(x) min(f1[x]))  
+    difNum=sum(f2!=f1)  
+    growTimes=growTimes+1
+    f1=f2
+    if (difNum==0) isOK=TRUE
+    if (isOK) break();
+  }
+
+  f1=names(NB)[f1]
+  names(f1)=names(NB)
+
+  NB2=tapply(names(f1),f1,c)
+  NB2=lapply(NB2,function(x) sort(x))
+  #create TC3
+  TC3=NB
+  TC3[names(f1)]=NB2[f1]
+
+
+  OTC <- sapply(TC3, paste, collapse=' ') # pasted version
+  names(OTC) = names(NB)
+  otcmap = as.list(OTC)
+  names(otcmap) = names(NB)
+
+  #output: list of clusters and tx->cluster map 
+  clust = names(table(OTC))  # clusters
+  OTC = strsplit(clust,split=' ')
+  names(OTC) = clust
+
+
+  #get CRP count
+  system.time(
+  CRPCOUNT <- foreach(i=1:length(OTC)) %dopar%{
+    myOTC=unlist(OTC[i])
+    names(myOTC)=NULL
+    #get binary codes of eqc
+    myeqc=unique(unlist(sapply(myOTC,function(x) tx2eqc[x])))
+    #eqc2tx[myeqc]
+    bcode=lapply(eqc2tx[myeqc],function(x) as.integer(!is.na(match(myOTC,x))))
+    #bcode
+
+    #get corresponding count - new codes
+    pick=which(rawmat$eqClass %in% myeqc)
+    countname=paste(rawmat$Transcript[pick],rawmat$eqClass[pick],sep="__")
+    count=rawmat$Weight[pick] 
+    myname=expand.grid(myOTC,myeqc)
+    myname=paste(myname[,1],myname[,2],sep="__")
+    myCount=rep(0,length(myname))
+    matchID=match(countname,myname)
+    myCount[matchID]=count
+
+    #create TC count matrix
+    mycrpCount=matrix(unlist(myCount),nrow=length(bcode),ncol=length(myOTC),byrow=TRUE)
+    colnames(mycrpCount)=myOTC
+    rownames(mycrpCount)=sapply(bcode, function(x) paste(x,collapse=""))
+   
+    if (sum(mycrpCount)>0 & nrow(mycrpCount)>1){ # if there are more than 1 row
+       ## sum(mycrpCount)>0 because some tx may be too short,<100 bp
+    tmp.colnames = colnames(mycrpCount)
+    tmp.rownames = rownames(mycrpCount)
+      mycrpCount=as.matrix(mycrpCount[order(rownames(mycrpCount)),])
+    colnames(mycrpCount) = tmp.colnames
+    rownames(mycrpCount) = tmp.rownames[order(tmp.rownames)]
+      #check if duplicated rownames
+      repID=table(rownames(mycrpCount))
+      repID=repID[which(repID>1)]
+      if (length(repID)>0){
+        rmID=which(rownames(mycrpCount) %in% names(repID))
+        sumcrpCount=NULL
+        for (j in 1:length(repID)){
+      
+        tmp.crp = as.matrix(mycrpCount[rownames(mycrpCount) %in% names(repID)[j],])
+      
+          sumcrpCount=rbind(sumcrpCount,colSums(tmp.crp))
+        }
+        rownames(sumcrpCount)=names(repID)
+        mycrpCount=mycrpCount[-rmID,]
+        mycrpCount=rbind(mycrpCount,sumcrpCount)
+      
+      if(nrow(mycrpCount)>1)
+      {
+      mycrpCount=mycrpCount[order(rownames(mycrpCount)),]
+      mycrpCount=as.matrix(mycrpCount)
+      colnames(mycrpCount) = tmp.colnames
+      }
+      }
+    }
+    
+    return(mycrpCount)  
+  #  #extract CRP matrix
+  #  mycrp=t(t(mycrpCount)/colSums(mycrpCount))
+  #  mycrp
+  }
+  )
+
+
+  #### now compute CRP, use H_thres (default=0) to filter out too low proportion sharing between two transcripts
+
+  CRP=list()
+  for (k in 1:length(CRPCOUNT)){
+    mycrpCount=CRPCOUNT[[k]]
+
+    #fix the bug when colSums(mycrpCount)==0 
+    txSum=colSums(mycrpCount)
+    mycrpCount=mycrpCount[,which(txSum>0),drop=FALSE]
+    if(ncol(mycrpCount)==0) next(); 
+    
+    #x=mycrpCount
+    y=t(t(mycrpCount)/colSums(mycrpCount))
+    z=apply(y,1,max)
+    pick=z>H_thres
+    x1=mycrpCount[pick,drop=FALSE,]
+    #decode eq in x1
+    myclust=c(1:ncol(x1))
+    for (i in 1:nrow(x1)){
+      x2=which(x1[i,] >0)
+      x3=which(myclust %in% myclust[x2])
+      myclust[x3]=min(myclust[x3])
+    }
+    #generate new CRP
+    clustID=as.integer(names(table(myclust)))
+    #newx=list()
+    for (i in 1:length(clustID)){  
+      pick=which(myclust == clustID[i])
+      X=mycrpCount[,pick,drop=FALSE]
+      X=X[rowSums(X)>0,drop=FALSE,]
+      rownames(X)=NULL
+      bcode=apply(X,1,function(x) paste(as.integer(x>0),collapse=""))
+      ubcode=unique(bcode)
+      cbcode=match(bcode,ubcode) #bcode clustering   
+      #redistribute values in row
+      for (cID in unique(cbcode)){
+        pick=which(cbcode==cID)
+        if (length(pick)>1){
+          for (j in 1:ncol(X)){
+            X[pick,j]=sum(X[pick,j])
+          }
+        }
+      }
+      pick=which(!duplicated(cbcode))
+      X=X[pick,drop=FALSE,]
+      rownames(X)=bcode[pick]
+      X_names=paste(colnames(X),collapse=" ")
+      #normalise to get crp
+      X=t(t(X)/colSums(X))    
+      #add up results
+      newx=list()
+      newx[[X_names]]=X
+      CRP=c(CRP,newx)
+    }
+  }
+
+  ccrpfun = function(x, clim=50) {
+   set.seed(2016)  ## to fix the kmeans clustering results
+   newx = x
+   repeat{
+     sval = svd(newx)$d;     ## singular values
+     #con = max(sval)/sval    ## condition numbers
+     con = abs(max(sval)/sval)    ## condition numbers; note from Nghia: might use abs() to avoid the case of -Inf when dividing to zero. This happened randomly, hard to reproduce
+     nsc = sum(con< clim)    ## number of clearly separated transcripts
+     ## break if OK
+     if (nsc== ncol(newx)) break
+     ## but collapse if some tx are too similar, using kmeans clustering
+     ##   to combine the similar tx's
+     ## 24Jul2020/Nghia: increase the iterations and the number of randome sets to get converged results 
+     subc = kmeans(t(x),nsc,iter.max = 100000,nstart=100) ## always start with original tx from the crp! 
+     newx = t(subc$center)
+     clust = subc$cluster
+       clust.name = tapply(names(clust), clust, paste, collapse=' ')
+       colnames(newx)= clust.name
+   }
+   return(newx)
+  }
+
+
+  CCRP <- lapply(CRP, ccrpfun)
+
+  for(j in 1:length(CRP))
+  {
+  X = CRP[[j]]
+  index = grep('_mut_all',colnames(X))
+  index_wt = grep('_mut_all',colnames(X),invert=TRUE)
+  if(length(index)==0)next;
+  if(length(index)>1&length(index_wt)>1)
+  {
+  Xwt = X[,-index];Xwt=ccrpfun(Xwt, clim=50)
+  Xmut= X[,index];Xmut=ccrpfun(Xmut, clim=50)
+  X = cbind(Xwt, Xmut)
+  CCRP[[j]] = X
+  next;
+  }
+  if(length(index)==1&length(index_wt)>1)
+  {
+  Xwt = X[,-index];Xwt=ccrpfun(Xwt, clim=50)
+  Xmut= X[,index]
+  X1 = cbind(Xwt, X[,index])
+  colnames(X1)=c(colnames(Xwt),colnames(X)[index])
+  CCRP[[j]] = X1
+  next;
+  }
+  if(length(index)==1&length(index_wt)==1)
+  {
+  CCRP[[j]] = X
+  }
+  }
+
+
+  #get txlength
+  txlength=as.integer(rawmat$RefLength)
+  names(txlength)=as.character(rawmat$Transcript)
+  pick=!duplicated(names(txlength))
+  txlength=txlength[pick]
+
+  #export CRP to file
+  #save(CRP,CCRP,txlength,file=fout)
+  res=list(CRP=CRP,CCRP=CCRP,CRPCOUNT=CRPCOUNT,txlength=txlength)
+  return(res)
 }
 

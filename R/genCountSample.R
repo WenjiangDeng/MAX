@@ -5,7 +5,7 @@ xmatEqFn="Xmatrix/eqClass.txt"
 sampleMutFn="mutDat_TP53.txt"
 inputFn="sample_01_1.fasta/Mutated_eqClass.txt"
 sampleFn="sample_01_1.fasta"
-outdir="Ycount"
+outdir="Ycount_MAX2"
 
 args = commandArgs(trailingOnly=TRUE)
 cat("\nNumber of arguments: ",length(args))
@@ -20,14 +20,21 @@ for (i in 1:length(args)){
   if (res[1]=="YcountDir") outdir=res[2]
 }
 
+if(!dir.exists(outdir)) dir.create(outdir)
 
+source("/path/to/R/Rsource.R")
 
-source("Rsource.R")
-source("Rfunctions.R")
+#Nghia /05Feb2022:
+mut.list=read.csv(sampleMutFn,header=TRUE, sep="\t",stringsAsFactors = FALSE)
+s=mut.list$Samples
+names(s)=mut.list$MutID
+sMap=sapply(s,function(x) sort(unique(trimws(strsplit(x,",")[[1]]))))
+s=unique(unlist(sMap))
+myMut=NULL
+for (i in 1:length(sMap)) if (sampleFn %in% sMap[[i]]){
+  myMut=c(myMut,names(sMap)[i])
+}
 
-fileMutDat=read.csv(sampleMutFn,header=FALSE, sep="\t",stringsAsFactors = FALSE)
-mutID=fileMutDat$V2[fileMutDat$V1 == sampleFn]
-myMut=unlist(strsplit(mutID,";"))
 
 eqDat=read.table(xmatEqFn, sep="\t",header=TRUE, stringsAsFactors = FALSE)
 txAll=unique(eqDat$Transcript)
@@ -89,4 +96,3 @@ samplename1=y$samplename
 save(Y,samplename1,file=paste0(outdir,"/",sampleFn,'_Ycount.RData'))
 
 cat("\n...Done...\n")
-

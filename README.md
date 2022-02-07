@@ -24,7 +24,7 @@ wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 ```
 - The RNA-seq data from multiple samples.
 #### Software requirements for MAX:
-- R version 3.6.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), polyester, Biostrings, foreach and doParallel
+- R version 3.6.0 or later with installed packages: GenomicFeatures, BSgenome.Hsapiens.UCSC.hg38 (or BSgenome.Hsapiens.UCSC.hg19), polyester, Biostrings, data.table, foreach and doParallel
 - C++11 compliant compiler (g++ >= 4.7)
 ## 2. Download and installation
 

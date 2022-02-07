@@ -154,6 +154,9 @@ runMAX.sh -param params.sh
 # Pull the docker image of MAX:
 sudo docker pull nghiavtr/max:v0.2.0
 
+#download the script to run MAX using docker
+wget https://raw.githubusercontent.com/WenjiangDeng/MAX/main/runMAXdocker.sh
+
 # run MAX via the docker:
 runMAXdocker.sh -param params.sh
 ```
@@ -163,47 +166,26 @@ The final results are in the MAX_isoform_expression.RData or MAX2_isoform_expres
 ## 5. A trial run of MAX by copy and paste
 This section shows a complete run for MAX pipeline. We can test MAX just by copy and paste of the commands. Here we focus on the mutations in the FLT3 gene, which is one of the most frequently mutated oncogenes in Acute Myeloid Leukemia (AML). 
 
-- Download the binary file of MAX and configure the path
-```sh
-# Download the binary version of MAX
-wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
 
-# Configure the tool
-tar -xzvf MAX-binary-0.2.0.tar.gz
-cd MAX-binary-0.2.0
-bash configure.sh
-# Add the paths to system
-export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
-export PATH=$PWD/bin:$PATH
-cd ..
+- Download the package containing a dataset of 10 samples, annotation and files for parameter settings to run MAX and MAX2
 
-
-
-```
-
-- Download the test RNA-seq data of 10 samples
 ```sh
 
 wget https://www.meb.ki.se/sites/biostatwiki/wp-content/uploads/sites/4/2022/02/testData.tar.gz
 tar -xzvf testData.tar.gz
 
-#move all data of testData folder to the current folder
+#move all files and folders of testData folder to the current folder
 mv testData/* ./
 
-```
 
 
-- Download the test RNA-seq data of 10 samples
-```sh
-
+# Uncompress the example dataset of 10 samples
 tar -xzvf test_FLT3_data.tar.gz
 
 
-```
+ls
 
-- List of the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene
-```sh
-
+#List of the mutation file, GTF annotation and the sequences of isoforms from FLT3 gene are stored in the files below
 
 # annotations for example gene: FLT3
 #test_FLT3.gtf
@@ -220,8 +202,21 @@ tar -xzvf test_FLT3_data.tar.gz
 ```
 
 
-- To run using installed MAX
+- To run using installed MAX, need to download the binary file of MAX and configure the path
 ```sh
+# Download the binary version of MAX
+wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
+
+# Configure the tool
+tar -xzvf MAX-binary-0.2.0.tar.gz
+cd MAX-binary-0.2.0
+bash configure.sh
+# Add the paths to system
+export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/bin:$PATH
+cd ..
+
+
 ### This step can take several minutes
 # run MAX
 bash MAX-binary-0.2.0/runMAX.sh -param test_params.sh
@@ -239,12 +234,15 @@ bash MAX-binary-0.2.0/runMAX.sh -param test_paramsMAX2.sh
 # Pull the docker image of MAX:
 sudo docker pull nghiavtr/max:v0.2.0
 
+#download the script to run MAX using docker
+wget https://raw.githubusercontent.com/WenjiangDeng/MAX/main/runMAXdocker.sh
+
 # run MAX via the docker:
-bash MAX-binary-0.2.0/runMAXdocker.sh -param test_params.sh
+bash runMAXdocker.sh -param test_params.sh
 
 
 # run MAX2 via the docker:
-bash MAX-binary-0.2.0/runMAXdocker.sh -param test_paramsMAX2.sh
+bash runMAXdocker.sh -param test_paramsMAX2.sh
 
 ```
 

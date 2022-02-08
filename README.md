@@ -8,7 +8,7 @@ MAX requires several files as input, such as:
 
 ![image](https://user-images.githubusercontent.com/40486459/110524071-36484600-8113-11eb-9d86-6369007b391c.png)
 
-If using MAX2, an extra column "Samples" consisting of IDs of samples carrying the mutaions, [see the an example of the mutation file for MAX2 here](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list_MAX2.txt): 
+**If using MAX2**, an extra column "Samples" consisting of IDs of samples carrying the mutations is required. The ID of a sample must be in the name of the fastq sequence of that sample (must be in gzip format). For example patient01_1.fastq.gz and patient01_2.fastq.gz are the sequencing data files of sample "patient01". Please see [an example of the mutation file for MAX2 here](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list_MAX2.txt): 
 
 #### (Please make sure if the mutations are detected using hg19 or hg38 assembly)
 
@@ -30,7 +30,7 @@ wget ftp://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/refMrna.fa.gz #hg38
 
 #### If you use the binary verion of MAX (recommended):
 
-- Download the latest binary version from the MAX release:
+- Download the latest binary version from the MAX release:
 ```sh
 wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2.0.tar.gz
 
@@ -39,7 +39,7 @@ wget https://github.com/WenjiangDeng/MAX/releases/download/v0.2.0/MAX-binary-0.2
 ```sh
 tar -xzvf MAX-binary-0.2.0.tar.gz
 ```
-- Move to the MAX_home directory and do configuration for MAX
+- Move to the MAX_home directory and do configuration for MAX
 ```sh
 cd MAX-binary-0.2.0
 bash configure.sh
@@ -50,7 +50,7 @@ export LD_LIBRARY_PATH=/path/to/MAX-binary-0.2.0/lib:$LD_LIBRARY_PATH
 export PATH=/path/to/MAX-binary-0.2.0/bin:$PATH
 #Done
 ```
-#### If you want to build MAX from sources:
+#### If you want to build MAX from sources:
 
 - download MAX
 ```sh
@@ -152,7 +152,7 @@ runMAX.sh -param params.sh
 - To run with docker,
 ```sh
 # Pull the docker image of MAX:
-sudo docker pull nghiavtr/max:v0.2.0
+docker pull nghiavtr/max:v0.2.0
 
 #download the script to run MAX using docker
 wget https://raw.githubusercontent.com/WenjiangDeng/MAX/main/runMAXdocker.sh
@@ -232,7 +232,7 @@ bash MAX-binary-0.2.0/runMAX.sh -param test_paramsMAX2.sh
 ### This step can take several minutes
 
 # Pull the docker image of MAX:
-sudo docker pull nghiavtr/max:v0.2.0
+docker pull nghiavtr/max:v0.2.0
 
 #download the script to run MAX using docker
 wget https://raw.githubusercontent.com/WenjiangDeng/MAX/main/runMAXdocker.sh

@@ -75,7 +75,11 @@ do
  endpoint=$(expr $(echo "${#sampleNameId}") - 11)
  sampleNameId=$(echo $sampleNameId|cut -c 1-$endpoint)
  echo $sampleNameId
- /path/to/bin/MAX -i Index_reference -l IU -1 <(gunzip -c $fn) -2 <(gunzip -c $fn2) -p $CPUNUM -o $sampleNameId
+
+ if [[ ! -f $sampleNameId/eqClass.txt ]]; then
+  /path/to/bin/MAX -i Index_reference -l IU -1 <(gunzip -c $fn) -2 <(gunzip -c $fn2) -p $CPUNUM -o $sampleNameId
+ fi
+ 
  if ((useMAX2 == 1)); then
   ### some work for MAX2
   #merge mutation to generate Mutated_eqClass.txt

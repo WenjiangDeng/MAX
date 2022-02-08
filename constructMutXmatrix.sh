@@ -46,7 +46,7 @@ awk '{if($1~/^>/)printf("%s Gene_Num=G%s\n",$1,NR);if($1!~/^>/)print $0;}' WT_Mu
 
 awk '/^>/{f=!d[$1];d[$1]=1}f' WT_Mut_tx_ref.2.fa > WT_Mut_tx_ref.final.fa
 
-rm WT_Mut_tx_ref.2.fa Mutant3.fa Mutant.fa Mutant.fa.1 Mutant2.fa WT_Mut_tx_ref.1.fa  tmp_gtf.sqlite
+rm WT_Mut_tx_ref.2.fa Mutant3.fa Mutant2.fa WT_Mut_tx_ref.1.fa  tmp_gtf.sqlite
 echo -e "\n WT_Mut.fa is generated. \n"
 
 mv WT_Mut_tx_ref.final.fa WT_Mut_reference.fa
@@ -77,7 +77,6 @@ Rscript /path/to/R/buildCRP.R in=Mutated_Combined_eqclass.txt out=$workdir/X_mat
 #keep eqclass of X_matrix
 mv eqClass.txt raw_Xmatrix.eq
 
-rm tmp_*.fa
 rm tmp*RData
 rm *fasta
 rm Mutated_Combined_eqclass.txt fragmentInfo.txt gene_tx_tmp.RData wild_type_subset_genes.fa

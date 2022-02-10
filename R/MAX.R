@@ -140,6 +140,7 @@ convertChrPosTxPos<- function (chrPos,txname=NULL,exonInfo=NULL,txExonMat=NULL){
       myTxPos=ifelse(brID==1,0,brCumsum[brID-1])+chrPos[i]-brStart[brID] #position of the chrPos at the tx
       txPos=c(txPos,min(myTxPos))
     }
+    txPos=txPos+1
     return(txPos)
   }else{
     txExonMat=txExonMat[order(txExonMat$EXONID, decreasing=TRUE),] #sort exons by decreasing order for reverse strand
@@ -156,6 +157,7 @@ convertChrPosTxPos<- function (chrPos,txname=NULL,exonInfo=NULL,txExonMat=NULL){
       myTxPos=max(brCumsum)-(brCumsum[brID]-(chrPos[i]-brStart[brID])) #position of the chrPos at the tx
       txPos=c(txPos,min(myTxPos)) #This should be the leftmost position of the tx
     }
+    txPos=txPos+1
     return(txPos)
   }
 }
@@ -200,8 +202,7 @@ for(i in 1:length(gene.list))
 
 				#get position of the mutation in the transcript: utilise function convertChrPosGenePos() of FuSeq
 				mytx$EXONSTRAND="+" #consider forward strand only since the sequence is extracted from the forward strand
-				mutPos=convertChrPosTxPos(chrPos=mut1[j,2],txname=NULL,exonInfo=NULL,txExonMat=mytx)
-				#mutPos=mutPos+1 #1 base different
+				mutPos=convertChrPosTxPos(chrPos=mut1[j,2],txname=NULL,exonInfo=NULL,txExonMat=mytx)				
 
 				#replace the REF by ALT
 				txseqVec=unlist(strsplit(txseq,""))
@@ -242,8 +243,7 @@ for(i in 1:length(gene.list))
 				#get position of the mutation in the transcript: utilise function convertChrPosGenePos() of FuSeq
 				mytx$EXONSTRAND="+" #consider forward strand only since the sequence is extracted from the forward strand
 				mutPos=convertChrPosTxPos(chrPos=mut1[j,3],txname=NULL,exonInfo=NULL,txExonMat=mytx)
-				#mutPos=mutPos+1 # make sure the input is 1-base system for location
-
+				
 				#replace the REF by ALT
 				txseqVec=unlist(strsplit(txseq,""))
 				#txseqVec[(mutPos-nchar(mut1[j,4])+1):mutPos]

@@ -1,6 +1,6 @@
 #!/bin/bash
-mut="";gtf="";ref="";workdir=$PWD;hg="hg19"
-while getopts ":m:g:r:d:v:" opt
+mut="";gtf="";ref="";workdir=$PWD;hg="hg19";CPUNUM=8
+while getopts ":m:g:r:d:v:t:" opt
 do
     case $opt in
 		v)
@@ -23,6 +23,10 @@ do
         echo "Working directory is:$OPTARG"
 		workdir=$OPTARG
         ;;
+        t)
+        echo "Number of threads:$OPTARG"
+        CPUNUM=$OPTARG
+        ;;        
 		:)                        
 		echo "$varname" 
 		echo "the option -$OPTARG requires an arguement"    
@@ -69,7 +73,7 @@ Rscript /path/to/R/genPolyesterSimulation.R WT_Mut_reference.fa $workdir
 /path/to/bin/TxIndexer -t WT_Mut_reference.fa -o Index_reference --force 
 
 # generate eqClass table using GenTC
-/path/to/bin/GenTC -i Index_reference -l IU -1 sample_01_1.fasta -2 sample_01_2.fasta -p 16 -o $workdir
+/path/to/bin/GenTC -i Index_reference -l IU -1 sample_01_1.fasta -2 sample_01_2.fasta -p $CPUNUM -o $workdir
 
 
 Rscript /path/to/R/buildCRP.R in=Mutated_Combined_eqclass.txt out=$workdir/X_matrix.RData workdir=$workdir

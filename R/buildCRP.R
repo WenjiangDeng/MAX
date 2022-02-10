@@ -85,18 +85,18 @@ for(i in unique(a$eqClass))
   #####
   #Nghia 05Feb2022:
   x$Transcript = gsub("_mut_[[:print:]]+$",'_mut_all',x$Transcript)#letters, numbers, punctuation, and whitespace.
-	#need to merge the same eqclasses after reduction
-  x_reduced=NULL
-  for(i in unique(x$eqClass)){
-  x1 = NULL
-  x1 = subset(x,eqClass==i)
-  x1 = x1[!duplicated(x1$Transcript),]
-  x1 = x1[order(x1$Transcript),]
-  x_reduced=rbind(x_reduced,x1)
-  }
-  x=x_reduced
-  x_reduced=NULL
-	#####
+#	#need to merge the same eqclasses after reduction
+#  x_reduced=NULL
+#  for(i in unique(x$eqClass)){
+#  x1 = NULL
+#  x1 = subset(x,eqClass==i)
+#  x1 = x1[!duplicated(x1$Transcript),]
+#  x1 = x1[order(x1$Transcript),]
+#  x_reduced=rbind(x_reduced,x1)
+#  }
+#  x=x_reduced
+#  x_reduced=NULL
+#	#####
 
 x_merge = NULL
 

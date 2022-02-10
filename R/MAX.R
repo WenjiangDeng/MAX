@@ -53,7 +53,11 @@ mut.list = as.data.frame(mut.list)
 #mut.list = read.table(mut,header=TRUE)
 index = paste(mut.list[,1],mut.list[,2],mut.list[,3],mut.list[,4],mut.list[,5],mut.list[,6])
 mut.list = mut.list[!duplicated(index),]
-mut.list$MutID=c(1:nrow(mut.list))
+#mut.list$MutID=c(1:nrow(mut.list))
+set.seed(2022)
+mutlist_names_uniqueID=sapply(c(1:nrow(mut.list)),function(x){paste0(c(sample(c(0:9),3,replace=TRUE),sample(c("T","C","G","A"),3,replace=TRUE)),collapse="")})
+mutlist_names_uniqueID=paste0(mutlist_names_uniqueID,c(1:nrow(mut.list)))
+mut.list$MutID=mutlist_names_uniqueID
 gene.list = unique(mut.list[,6])
 
 #Nghia /05Feb2022:

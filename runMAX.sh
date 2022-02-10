@@ -59,7 +59,7 @@ fi
 
 if [[ ! -f X_matrix.RData || ! -f raw_Xmatrix.eq || ! -f MAX_mut_list_keepMutID.txt || ! -f WT_Mut_reference.fa || ! -d Index_reference ]]; then
 #construct the wild-type+Mutant reference, reference index and the X matrix
-bash /path/to/constructMutXmatrix.sh -m $mutlist -g $gtffile -r $fastafile -v $hgversion -d $OUTPUT
+bash /path/to/constructMutXmatrix.sh -m $mutlist -g $gtffile -r $fastafile -v $hgversion -d $OUTPUT -t $CPUNUM
 fi
 
 

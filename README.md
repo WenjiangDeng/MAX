@@ -100,8 +100,10 @@ sudo apt install zlib1g-dev
 sudo apt install zlib1g
 # update all installations
 sudo apt-get update
+```
 
-# install MAX
+- finally, install MAX
+```sh
 DBOOST_ROOT=$PWD/boost_1_58_0/boost_1_58_0_build/ DTBB_INSTALL_DIR=$PWD/tbb44_20160526oss/ DCMAKE_INSTALL_PREFIX=MAX_0.2.0_build bash install.sh
 
 #The MAX was successfully built!

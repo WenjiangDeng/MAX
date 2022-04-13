@@ -121,7 +121,7 @@ export PATH=$PWD/MAX_0.2.0_build/bin:$PATH
 The examples of parameter setting files can be downloaded here: [1) param file for running MAX](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_params.sh) and [2) param file for running MAX2](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_paramsMAX2.sh).
 The param file requires the following parameter:
 
-- **mutlist**: a file contains a list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence, and gene names. If you want to run MAX2, an extra column "Sample" is required. Examples of mutation lists to run MAX and MAX2 are provided here: [PUT THE LINK].
+- **mutlist**: a file contains a list of mutations containing the information of chromosome, start position, end position, reference sequence, alternative sequence, and gene names. If you want to run MAX2, an extra column "Sample" is required. Examples of mutation lists are provided here: [example file for MAX](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list.txt) and [example file for MAX2](https://github.com/WenjiangDeng/MAX/blob/main/testData/test_mutation_list_MAX2.txt).
 - **gtffile**: gtf of the gene carring mutations
 - **fastafile**: sequences of the transcripts of the gene
 - **hgversion**: annotation version of the human genome: hg19 or hg38

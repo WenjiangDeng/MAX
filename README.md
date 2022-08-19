@@ -249,4 +249,6 @@ bash runMAXdocker.sh -param test_paramsMAX2.sh
 ```
 
 
-#### Reference: tba
+#### Reference
+Deng, Wenjiang, Tian Mou, Yudi Pawitan, and Trung Nghia Vu. 2022. “Quantification of Mutant–Allele Expression at Isoform Level in Cancer from RNA-Seq Data.” NAR Genomics and Bioinformatics 4 (3): lqac052. https://doi.org/10.1093/nargab/lqac052.
+
